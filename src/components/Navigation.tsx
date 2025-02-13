@@ -20,13 +20,6 @@ export function Navigation() {
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
-  const handleCartClick = () => {
-    toast({
-      title: "Cart opened",
-      description: "Your shopping cart has been opened.",
-    });
-  };
-
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -62,14 +55,21 @@ export function Navigation() {
             >
               Track Order
             </Link>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={handleCartClick}
-              className="relative"
+            <Link
+              to="/cart"
+              className="text-primary hover:text-accent transition-colors"
             >
-              <ShoppingCart className="h-5 w-5" />
-            </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="relative"
+              >
+                <ShoppingCart className="h-5 w-5" />
+                <span className="absolute -top-1 -right-1 bg-accent text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                  2
+                </span>
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -106,15 +106,13 @@ export function Navigation() {
               >
                 Track Order
               </Link>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={handleCartClick}
-                className="w-full justify-start"
+              <Link
+                to="/cart"
+                className="block text-primary hover:text-accent transition-colors py-2"
+                onClick={toggleMenu}
               >
-                <ShoppingCart className="h-5 w-5 mr-2" />
-                Cart
-              </Button>
+                Cart (2)
+              </Link>
             </div>
           </div>
         )}

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -103,6 +102,54 @@ const products = [
     price: 19.99,
     image: "https://images.unsplash.com/photo-1551529834-525807d6b4f3?auto=format&fit=crop&q=80",
     category: "truffles"
+  },
+  {
+    id: 5,
+    name: "Polo Mints",
+    description: "Classic breath freshening mints",
+    price: 2.99,
+    image: "https://images.unsplash.com/photo-1582058091505-f87a2e55a40f?auto=format&fit=crop&q=80",
+    category: "candies"
+  },
+  {
+    id: 6,
+    name: "Mentos Fresh",
+    description: "Chewy mint candies",
+    price: 1.99,
+    image: "https://images.unsplash.com/photo-1582058091505-f87a2e55a40f?auto=format&fit=crop&q=80",
+    category: "candies"
+  },
+  {
+    id: 7,
+    name: "Ferrero Rocher Box",
+    description: "Luxury chocolate gift box",
+    price: 24.99,
+    image: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80",
+    category: "gifts"
+  },
+  {
+    id: 8,
+    name: "Dark Chocolate Truffles",
+    description: "Rich dark chocolate truffles",
+    price: 15.99,
+    image: "https://images.unsplash.com/photo-1551529834-525807d6b4f3?auto=format&fit=crop&q=80",
+    category: "truffles"
+  },
+  {
+    id: 9,
+    name: "Ghirardelli Squares",
+    description: "Premium chocolate squares",
+    price: 8.99,
+    image: "https://images.unsplash.com/photo-1614088685112-0a760b71a3c8?auto=format&fit=crop&q=80",
+    category: "chocolates"
+  },
+  {
+    id: 10,
+    name: "Celebration Box",
+    description: "Mixed chocolate selection box",
+    price: 34.99,
+    image: "https://images.unsplash.com/photo-1548741487-18d363dc4469?auto=format&fit=crop&q=80",
+    category: "gifts"
   }
 ];
 
