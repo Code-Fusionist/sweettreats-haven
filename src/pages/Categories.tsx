@@ -1,7 +1,7 @@
 
 import { Link } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
-import { products } from "./Products"; // We'll export products from Products.tsx
+import { products } from "./Products";
 
 const Categories = () => {
   const getProductsByCategory = (category: string) => {
@@ -32,7 +32,8 @@ const Categories = () => {
                       {getProductsByCategory(category.slug).map(product => (
                         <Link 
                           key={product.id} 
-                          to={`/products#${product.id}`}
+                          to={`/products`}
+                          state={{ productId: product.id }}
                           className="flex items-center space-x-2 text-gray-700 hover:text-accent"
                         >
                           <img 

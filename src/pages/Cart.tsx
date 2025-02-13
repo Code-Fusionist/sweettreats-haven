@@ -1,39 +1,47 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Minus, Plus, X } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const Cart = () => {
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: "Dark Chocolate Truffles",
-      price: 12.99,
-      quantity: 2,
-      image: "https://images.unsplash.com/photo-1551529834-525807d6b4f3?auto=format&fit=crop&q=80"
-    },
-    {
-      id: 2,
-      name: "Milk Chocolate Box",
-      price: 24.99,
-      quantity: 1,
-      image: "https://images.unsplash.com/photo-1549007994-cb92caebd54b?auto=format&fit=crop&q=80"
-    }
-  ]);
+  const [cartItems, setCartItems] = useState<any[]>([]);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    const loadCart = () => {
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      setCartItems(cart);
+    };
+
+    loadCart();
+    window.addEventListener('cartUpdated', loadCart);
+    return () => window.removeEventListener('cartUpdated', loadCart);
+  }, []);
 
   const updateQuantity = (id: number, change: number) => {
-    setCartItems(items =>
-      items.map(item =>
-        item.id === id
-          ? { ...item, quantity: Math.max(0, item.quantity + change) }
-          : item
-      ).filter(item => item.quantity > 0)
-    );
+    const updatedCart = cartItems.map(item =>
+      item.id === id
+        ? { ...item, quantity: Math.max(0, item.quantity + change) }
+        : item
+    ).filter(item => item.quantity > 0);
+
+    setCartItems(updatedCart);
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+    window.dispatchEvent(new Event('cartUpdated'));
   };
 
   const removeItem = (id: number) => {
-    setCartItems(items => items.filter(item => item.id !== id));
+    const updatedCart = cartItems.filter(item => item.id !== id);
+    setCartItems(updatedCart);
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+    window.dispatchEvent(new Event('cartUpdated'));
+    
+    toast({
+      title: "Item removed",
+      description: "The item has been removed from your cart.",
+    });
   };
 
   const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);

@@ -1,4 +1,6 @@
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -14,6 +16,7 @@ export const products = [
     id: 1,
     name: "Dairy Milk Silk",
     description: "Smooth milk chocolate with rich cocoa",
+    details: "Experience the silky smooth texture of premium milk chocolate. Made with the finest cocoa beans and fresh milk, this chocolate bar melts in your mouth for a heavenly experience.",
     price: 4.99,
     image: "https://images.unsplash.com/photo-1623660053975-e8f0f1845cce?auto=format&fit=crop&q=80",
     category: "chocolates"
@@ -22,6 +25,7 @@ export const products = [
     id: 2,
     name: "Lindt Excellence",
     description: "Premium dark chocolate with 70% cocoa",
+    details: "Savor the intense flavor of 70% dark chocolate. Crafted by Swiss chocolatiers, this bar offers a perfect balance of bitterness and sweetness.",
     price: 5.99,
     image: "https://images.unsplash.com/photo-1614088685112-0a760b71a3c8?auto=format&fit=crop&q=80",
     category: "chocolates"
@@ -123,6 +127,18 @@ const Products = () => {
   const { toast } = useToast();
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedProduct, setSelectedProduct] = useState<typeof products[0] | null>(null);
+  const location = useLocation();
+
+  useEffect(() => {
+    // Check for product ID from category page
+    const state = location.state as { productId?: number };
+    if (state?.productId) {
+      const product = products.find(p => p.id === state.productId);
+      if (product) {
+        setSelectedProduct(product);
+      }
+    }
+  }, [location]);
 
   const addToCart = (product: typeof products[0]) => {
     const currentCart = JSON.parse(localStorage.getItem('cart') || '[]');
@@ -142,6 +158,7 @@ const Products = () => {
       description: `${product.name} has been added to your cart.`,
     });
     
+    // Dispatch event to update cart count in navigation
     window.dispatchEvent(new Event('cartUpdated'));
   };
 
@@ -234,5 +251,4 @@ const categories = [
   { label: "Truffles", value: "truffles" }
 ];
 
-export { products };
 export default Products;
