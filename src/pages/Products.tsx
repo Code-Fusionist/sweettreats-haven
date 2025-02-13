@@ -1,76 +1,15 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
-const Products = () => {
-  const { toast } = useToast();
-  const [selectedCategory, setSelectedCategory] = useState("all");
-
-  const addToCart = (product: typeof products[0]) => {
-    toast({
-      title: "Added to cart",
-      description: `${product.name} has been added to your cart.`,
-    });
-  };
-
-  const filteredProducts = selectedCategory === "all" 
-    ? products 
-    : products.filter(p => p.category === selectedCategory);
-
-  return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="container mx-auto px-4">
-        <div className="mb-8">
-          <h1 className="text-4xl font-playfair font-bold text-center mb-8">Our Products</h1>
-          <div className="flex flex-wrap justify-center gap-4">
-            {categories.map((category) => (
-              <Button
-                key={category.value}
-                variant={selectedCategory === category.value ? "default" : "outline"}
-                onClick={() => setSelectedCategory(category.value)}
-                className="rounded-full"
-              >
-                {category.label}
-              </Button>
-            ))}
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {filteredProducts.map((product) => (
-            <div key={product.id} className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-              <div className="aspect-square overflow-hidden">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-              <div className="p-4">
-                <h3 className="font-playfair font-semibold text-lg mb-2">{product.name}</h3>
-                <p className="text-gray-600 text-sm mb-4">{product.description}</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-lg font-semibold">${product.price}</span>
-                  <Button onClick={() => addToCart(product)}>Add to Cart</Button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const categories = [
-  { label: "All Products", value: "all" },
-  { label: "Chocolates", value: "chocolates" },
-  { label: "Candies", value: "candies" },
-  { label: "Gift Boxes", value: "gifts" },
-  { label: "Truffles", value: "truffles" }
-];
-
-const products = [
+export const products = [
   {
     id: 1,
     name: "Dairy Milk Silk",
@@ -150,7 +89,150 @@ const products = [
     price: 34.99,
     image: "https://images.unsplash.com/photo-1548741487-18d363dc4469?auto=format&fit=crop&q=80",
     category: "gifts"
+  },
+  {
+    id: 11,
+    name: "Mint Fresh Pack",
+    description: "Refreshing mint candies for fresh breath",
+    price: 3.99,
+    image: "https://images.unsplash.com/photo-1582058091505-f87a2e55a40f?auto=format&fit=crop&q=80",
+    category: "candies",
+    details: "A pack of refreshing mint candies perfect for any time of day. Sugar-free and long-lasting flavor."
+  },
+  {
+    id: 12,
+    name: "Dark Truffle Box",
+    description: "Luxury dark chocolate truffles",
+    price: 22.99,
+    image: "https://images.unsplash.com/photo-1551529834-525807d6b4f3?auto=format&fit=crop&q=80",
+    category: "truffles",
+    details: "Handcrafted dark chocolate truffles with a smooth ganache center. Perfect for gifting or self-indulgence."
+  },
+  {
+    id: 13,
+    name: "Raspberry Chocolates",
+    description: "Dark chocolate with raspberry filling",
+    price: 9.99,
+    image: "https://images.unsplash.com/photo-1614088685112-0a760b71a3c8?auto=format&fit=crop&q=80",
+    category: "chocolates",
+    details: "Premium dark chocolate shells filled with real raspberry puree. A perfect balance of sweet and tart."
   }
 ];
 
+const Products = () => {
+  const { toast } = useToast();
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedProduct, setSelectedProduct] = useState<typeof products[0] | null>(null);
+
+  const addToCart = (product: typeof products[0]) => {
+    const currentCart = JSON.parse(localStorage.getItem('cart') || '[]');
+    
+    const existingItemIndex = currentCart.findIndex((item: any) => item.id === product.id);
+    
+    if (existingItemIndex > -1) {
+      currentCart[existingItemIndex].quantity += 1;
+    } else {
+      currentCart.push({ ...product, quantity: 1 });
+    }
+    
+    localStorage.setItem('cart', JSON.stringify(currentCart));
+    
+    toast({
+      title: "Added to cart",
+      description: `${product.name} has been added to your cart.`,
+    });
+    
+    window.dispatchEvent(new Event('cartUpdated'));
+  };
+
+  const filteredProducts = selectedCategory === "all" 
+    ? products 
+    : products.filter(p => p.category === selectedCategory);
+
+  return (
+    <div className="min-h-screen bg-gray-50 py-12">
+      <div className="container mx-auto px-4">
+        <div className="mb-8">
+          <h1 className="text-4xl font-playfair font-bold text-center mb-8">Our Products</h1>
+          <div className="flex flex-wrap justify-center gap-4">
+            {categories.map((category) => (
+              <Button
+                key={category.value}
+                variant={selectedCategory === category.value ? "default" : "outline"}
+                onClick={() => setSelectedCategory(category.value)}
+                className="rounded-full"
+              >
+                {category.label}
+              </Button>
+            ))}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          {filteredProducts.map((product) => (
+            <div key={product.id} className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+              <div 
+                className="aspect-square overflow-hidden cursor-pointer"
+                onClick={() => setSelectedProduct(product)}
+              >
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="p-4">
+                <h3 className="font-playfair font-semibold text-lg mb-2">{product.name}</h3>
+                <p className="text-gray-600 text-sm mb-4">{product.description}</p>
+                <div className="flex items-center justify-between">
+                  <span className="text-lg font-semibold">${product.price}</span>
+                  <Button onClick={() => addToCart(product)}>Add to Cart</Button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <Dialog open={!!selectedProduct} onOpenChange={() => setSelectedProduct(null)}>
+          {selectedProduct && (
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>{selectedProduct.name}</DialogTitle>
+                <DialogDescription>
+                  <div className="mt-4">
+                    <img
+                      src={selectedProduct.image}
+                      alt={selectedProduct.name}
+                      className="w-full h-64 object-cover rounded-lg mb-4"
+                    />
+                    <p className="text-gray-600 mb-4">{selectedProduct.details || selectedProduct.description}</p>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xl font-semibold">${selectedProduct.price}</span>
+                      <Button onClick={() => {
+                        addToCart(selectedProduct);
+                        setSelectedProduct(null);
+                      }}>
+                        Add to Cart
+                      </Button>
+                    </div>
+                  </div>
+                </DialogDescription>
+              </DialogHeader>
+            </DialogContent>
+          )}
+        </Dialog>
+      </div>
+    </div>
+  );
+};
+
+const categories = [
+  { label: "All Products", value: "all" },
+  { label: "Chocolates", value: "chocolates" },
+  { label: "Candies", value: "candies" },
+  { label: "Gift Boxes", value: "gifts" },
+  { label: "Truffles", value: "truffles" }
+];
+
+export { products };
 export default Products;

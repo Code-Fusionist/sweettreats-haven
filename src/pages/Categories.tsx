@@ -1,8 +1,13 @@
 
 import { Link } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
+import { products } from "./Products"; // We'll export products from Products.tsx
 
 const Categories = () => {
+  const getProductsByCategory = (category: string) => {
+    return products.filter(p => p.category === category);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="container mx-auto px-4">
@@ -11,7 +16,7 @@ const Categories = () => {
         <div className="grid gap-8">
           {categories.map((category) => (
             <div key={category.title} className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all">
-              <Link to={`/categories/${category.slug}`} className="flex flex-col md:flex-row">
+              <div className="flex flex-col md:flex-row">
                 <div className="md:w-1/3 aspect-video md:aspect-square overflow-hidden">
                   <img
                     src={category.image}
@@ -19,22 +24,29 @@ const Categories = () => {
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                   />
                 </div>
-                <div className="flex-1 p-6 md:p-8 flex flex-col justify-between">
+                <div className="flex-1 p-6 md:p-8">
                   <div>
                     <h2 className="text-2xl font-playfair font-semibold mb-4">{category.title}</h2>
                     <p className="text-gray-600 mb-6">{category.description}</p>
-                    <ul className="space-y-2">
-                      {category.subcategories.map((sub) => (
-                        <li key={sub} className="text-gray-700">{sub}</li>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {getProductsByCategory(category.slug).map(product => (
+                        <Link 
+                          key={product.id} 
+                          to={`/products#${product.id}`}
+                          className="flex items-center space-x-2 text-gray-700 hover:text-accent"
+                        >
+                          <img 
+                            src={product.image} 
+                            alt={product.name} 
+                            className="w-12 h-12 object-cover rounded"
+                          />
+                          <span>{product.name}</span>
+                        </Link>
                       ))}
-                    </ul>
-                  </div>
-                  <div className="mt-6 flex items-center text-accent hover:text-accent/80 transition-colors">
-                    <span className="mr-2">Explore Category</span>
-                    <ChevronRight className="h-4 w-4" />
+                    </div>
                   </div>
                 </div>
-              </Link>
+              </div>
             </div>
           ))}
         </div>
@@ -48,34 +60,19 @@ const categories = [
     title: "Chocolates",
     slug: "chocolates",
     description: "Discover our premium selection of milk, dark, and nutty chocolates from renowned brands worldwide.",
-    image: "https://images.unsplash.com/photo-1549007994-cb92caebd54b?auto=format&fit=crop&q=80",
-    subcategories: [
-      "Milk Chocolates (Dairy Milk, Hershey's, Galaxy)",
-      "Dark Chocolates (Lindt, Amul Dark, Ghirardelli)",
-      "Nutty Chocolates (Snickers, Perk, Toblerone)"
-    ]
+    image: "https://images.unsplash.com/photo-1549007994-cb92caebd54b?auto=format&fit=crop&q=80"
   },
   {
     title: "Mint Candies",
     slug: "candies",
     description: "Refresh your senses with our collection of mint candies, from classic breath fresheners to sugar-free options.",
-    image: "https://images.unsplash.com/photo-1582058091505-f87a2e55a40f?auto=format&fit=crop&q=80",
-    subcategories: [
-      "Breath Fresheners (Polo, Mentos, Altoids)",
-      "Sugar-Free Mints (Ice Breakers, Happydent)",
-      "Flavored Mints (Tic Tac, Mentos Fruity)"
-    ]
+    image: "https://images.unsplash.com/photo-1582058091505-f87a2e55a40f?auto=format&fit=crop&q=80"
   },
   {
     title: "Gift Boxes",
     slug: "gifts",
     description: "Perfect for any occasion, our curated gift boxes feature premium chocolates and treats.",
-    image: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80",
-    subcategories: [
-      "Assorted Chocolates (Ferrero Rocher, Celebrations)",
-      "Premium Sweets & Treats (Godiva, Royce)",
-      "Festive & Custom Boxes (Seasonal Collections)"
-    ]
+    image: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80"
   }
 ];
 

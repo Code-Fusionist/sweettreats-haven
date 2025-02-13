@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 export function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -16,6 +17,21 @@ export function Navigation() {
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const updateCartCount = () => {
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      const count = cart.reduce((sum: number, item: any) => sum + item.quantity, 0);
+      setCartCount(count);
+    };
+
+    // Initial count
+    updateCartCount();
+
+    // Listen for cart updates
+    window.addEventListener('cartUpdated', updateCartCount);
+    return () => window.removeEventListener('cartUpdated', updateCartCount);
   }, []);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -65,9 +81,11 @@ export function Navigation() {
                 className="relative"
               >
                 <ShoppingCart className="h-5 w-5" />
-                <span className="absolute -top-1 -right-1 bg-accent text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                  2
-                </span>
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-accent text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                    {cartCount}
+                  </span>
+                )}
               </Button>
             </Link>
           </div>
@@ -111,7 +129,7 @@ export function Navigation() {
                 className="block text-primary hover:text-accent transition-colors py-2"
                 onClick={toggleMenu}
               >
-                Cart (2)
+                Cart ({cartCount})
               </Link>
             </div>
           </div>
