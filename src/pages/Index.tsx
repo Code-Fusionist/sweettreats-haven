@@ -3,9 +3,31 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Star } from "lucide-react";
 import { products } from "./Products";
+import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
+  const { toast } = useToast();
   const featuredProducts = products.slice(0, 4);
+
+  const addToCart = (product: typeof products[0]) => {
+    const currentCart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const existingItemIndex = currentCart.findIndex((item: any) => item.id === product.id);
+    
+    if (existingItemIndex > -1) {
+      currentCart[existingItemIndex].quantity += 1;
+    } else {
+      currentCart.push({ ...product, quantity: 1 });
+    }
+    
+    localStorage.setItem('cart', JSON.stringify(currentCart));
+    
+    toast({
+      title: "Added to cart",
+      description: `${product.name} has been added to your cart.`,
+    });
+    
+    window.dispatchEvent(new Event('cartUpdated'));
+  };
 
   return (
     <div className="min-h-screen">
@@ -27,7 +49,7 @@ const Index = () => {
               <Link to="/products">Shop Now</Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="text-white border-white hover:bg-white hover:text-primary">
-              <Link to="/categories">Browse Categories</Link>
+              <Link to="/products">Browse Products</Link>
             </Button>
           </div>
         </div>
@@ -41,55 +63,25 @@ const Index = () => {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {featuredProducts.map((product) => (
-              <Link
-                to={`/products#${product.id}`}
+              <div
                 key={product.id}
                 className="group bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all"
               >
-                <div className="aspect-square overflow-hidden">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
+                <Link to={`/products`} state={{ productId: product.id }} className="block">
+                  <div className="aspect-square overflow-hidden">
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                </Link>
                 <div className="p-4">
                   <h3 className="font-playfair font-semibold text-lg mb-2">{product.name}</h3>
                   <p className="text-gray-600 text-sm mb-2">{product.description}</p>
-                  <span className="text-lg font-semibold text-accent">${product.price}</span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Categories Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-playfair font-bold text-center mb-12">
-            Explore Our Categories
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {categories.map((category, index) => (
-              <div
-                key={category.title}
-                className="group relative overflow-hidden rounded-lg aspect-square animate-fade-up"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <img
-                  src={category.image}
-                  alt={category.title}
-                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity group-hover:bg-black/50">
-                  <div className="text-center">
-                    <h3 className="text-2xl font-playfair font-bold text-white mb-2">
-                      {category.title}
-                    </h3>
-                    <Button asChild variant="outline" className="text-white border-white hover:bg-white hover:text-primary">
-                      <Link to={`/products?category=${category.link}`}>Explore</Link>
-                    </Button>
+                  <div className="flex items-center justify-between">
+                    <span className="text-lg font-semibold text-accent">${product.price}</span>
+                    <Button onClick={() => addToCart(product)}>Add to Cart</Button>
                   </div>
                 </div>
               </div>
@@ -99,7 +91,7 @@ const Index = () => {
       </section>
 
       {/* Testimonials */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-playfair font-bold text-center mb-12">
             What Our Customers Say
@@ -108,7 +100,7 @@ const Index = () => {
             {testimonials.map((testimonial, index) => (
               <div
                 key={index}
-                className="bg-gray-50 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
               >
                 <div className="flex items-center mb-4">
                   {[...Array(5)].map((_, i) => (
@@ -142,24 +134,6 @@ const Index = () => {
     </div>
   );
 };
-
-const categories = [
-  {
-    title: "Premium Chocolates",
-    image: "https://images.unsplash.com/photo-1549007994-cb92caebd54b?auto=format&fit=crop&q=80",
-    link: "chocolates"
-  },
-  {
-    title: "Mint Candies",
-    image: "https://images.unsplash.com/photo-1582058091505-f87a2e55a40f?auto=format&fit=crop&q=80",
-    link: "candies"
-  },
-  {
-    title: "Gift Boxes",
-    image: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80",
-    link: "gifts"
-  }
-];
 
 const testimonials = [
   {

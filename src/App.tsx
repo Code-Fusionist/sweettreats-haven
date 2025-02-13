@@ -12,6 +12,7 @@ import Categories from "./pages/Categories";
 import Tracking from "./pages/Tracking";
 import NotFound from "./pages/NotFound";
 import Cart from "./pages/Cart";
+import Payment from "./pages/Payment";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Shipping from "./pages/Shipping";
@@ -33,6 +34,7 @@ const App = () => (
             <Route path="/categories" element={<Categories />} />
             <Route path="/tracking" element={<Tracking />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/payment" element={<Payment />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/shipping" element={<Shipping />} />

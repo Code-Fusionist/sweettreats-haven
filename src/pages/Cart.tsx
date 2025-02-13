@@ -105,7 +105,9 @@ const Cart = () => {
                 <span className="font-semibold">Total</span>
                 <span className="text-xl font-bold">${total.toFixed(2)}</span>
               </div>
-              <Button className="w-full">Proceed to Checkout</Button>
+              <Button asChild className="w-full">
+                <Link to="/payment">Proceed to Payment</Link>
+              </Button>
             </div>
           </div>
         )}
