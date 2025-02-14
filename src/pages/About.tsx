@@ -13,7 +13,7 @@ const About = () => {
             
             <h2 className="text-2xl font-playfair font-semibold mb-4">Our Story</h2>
             <p className="text-gray-600 mb-6">
-              Founded in 2020, SweetTreats Haven was born from a simple love for quality chocolates and a desire to share that passion with others. What started as a small online boutique has grown into a beloved destination for chocolate enthusiasts and gift-givers alike.
+              Founded in 2025, SweetTreats Haven was born from a simple love for quality chocolates and a desire to share that passion with others. What started as a small online boutique has grown into a beloved destination for chocolate enthusiasts and gift-givers alike.
             </p>
             
             <h2 className="text-2xl font-playfair font-semibold mb-4">Our Mission</h2>
