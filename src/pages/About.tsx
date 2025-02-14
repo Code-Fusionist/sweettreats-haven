@@ -8,7 +8,7 @@ const About = () => {
         <div className="bg-white rounded-lg shadow-sm p-8 space-y-8">
           <div className="prose max-w-none">
             <p className="text-lg text-gray-600 leading-relaxed mb-6">
-              Welcome to SweetTreats Haven, your premier destination for premium chocolates and confectionery from around the world. We are passionate about bringing you the finest selection of sweets, carefully curated to satisfy your cravings and delight your senses.
+              Welcome to SweetTreats Haven, your one stop destination for premium chocolates and confectionery from around the world. We are passionate about bringing you the finest selection of sweets, carefully curated to satisfy your cravings and delight your senses.
             </p>
             
             <h2 className="text-2xl font-playfair font-semibold mb-4">Our Story</h2>
