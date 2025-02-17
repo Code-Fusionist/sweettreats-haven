@@ -36,7 +36,7 @@ const Index = () => {
         <div className="absolute inset-0 bg-black/50" />
         <div className="container mx-auto px-4 text-center relative z-10 text-white">
           <span className="inline-block mb-4 px-3 py-1 bg-accent/10 text-accent rounded-full text-sm font-medium animate-fade-down">
-            Welcome to SweetCart Haven
+            Welcome to SweetTreats Haven
           </span>
           <h1 className="text-4xl md:text-6xl font-playfair font-bold mb-6 animate-fade-down" style={{ animationDelay: "0.1s" }}>
             Discover Premium Sweets & Chocolates
