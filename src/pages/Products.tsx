@@ -211,7 +211,7 @@ const Products = () => {
                 <h3 className="font-playfair font-semibold text-lg mb-2">{product.name}</h3>
                 <p className="text-gray-600 text-sm mb-4">{product.description}</p>
                 <div className="flex items-center justify-between">
-                  <span className="text-lg font-semibold">${product.price}</span>
+                  <span className="text-lg font-semibold">₹{product.price}</span>
                   <Button onClick={() => addToCart(product)}>Add to Cart</Button>
                 </div>
               </div>
