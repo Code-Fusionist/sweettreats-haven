@@ -121,15 +121,6 @@ export const products = [
     category: "chocolates",
     details: "Premium dark chocolate shells filled with real raspberry puree. A perfect balance of sweet and tart."
   }
-  {
-    id: 14,
-    name: "Life Savers Mints",
-    description: "Classic ring-shaped refreshing mint candy.",
-    price: 6.99,
-    image: "https://images.unsplash.com/photo-1582058091505-f87a2e55a40f?auto=format&fit=crop&q=80",
-    category: "candies",
-    details: "A pack of refreshing, sugar-free mints with a long-lasting flavor, perfect for any time of day."
-  },
 ];
 
 const Products = () => {
