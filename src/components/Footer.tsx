@@ -10,7 +10,7 @@ export function Footer() {
           <div>
             <h3 className="font-playfair text-xl font-semibold mb-4">About Us</h3>
             <p className="text-gray-300 text-sm leading-relaxed">
-              SweetCart Haven brings you premium chocolates and confectionery from around the world. Experience luxury in every bite.
+              SweetTreats Haven brings you premium chocolates and confectionery from around the world. Experience luxury in every bite.
             </p>
           </div>
           
