@@ -126,7 +126,7 @@ export const products = [
     "name": "Life Savers Mints",
     "description": "Refreshing sugar-free mints with a long-lasting flavor",
     "price": 4.99,
-    "image": "https://images.unsplash.com/photo-1607082349569-9ff04d0ba38c?auto=format&fit=crop&q=80",
+    "image": "https://images-cdn.ubuy.co.in/651ef2ea3da1af110d0f032c-life-savers-pep-o-mint-breath-mints-hard.jpg",
     "category": "candies",
     "details": "Classic ring-shaped mints that provide a refreshing burst of coolness. Perfect for freshening breath anytime, anywhere."
 }
