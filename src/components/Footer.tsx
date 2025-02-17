@@ -59,7 +59,7 @@ export function Footer() {
         </div>
         
         <div className="mt-12 pt-8 border-t border-gray-800 text-center text-gray-300">
-          <p>&copy; 2024 SweetCart Haven. All rights reserved.</p>
+          <p>&copy; 2024 SweetTreats Haven. All rights reserved.</p>
         </div>
       </div>
     </footer>
