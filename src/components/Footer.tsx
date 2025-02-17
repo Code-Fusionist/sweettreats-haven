@@ -35,7 +35,7 @@ export function Footer() {
           <div>
             <h3 className="font-playfair text-xl font-semibold mb-4">Contact Info</h3>
             <ul className="space-y-2 text-gray-300">
-              <li>Email: info@sweetchart.com</li>
+              <li>Email: info@SweetTreats.com</li>
               <li>Phone: +1 (555) 123-4567</li>
               <li>Address: 123 Sweet Street,</li>
               <li>Chocolate City, CC 12345</li>
