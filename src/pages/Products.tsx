@@ -120,7 +120,7 @@ export const products = [
     image: "https://images.unsplash.com/photo-1614088685112-0a760b71a3c8?auto=format&fit=crop&q=80",
     category: "chocolates",
     details: "Premium dark chocolate shells filled with real raspberry puree. A perfect balance of sweet and tart."
-  }
+  },
   {
     "id": 14,
     "name": "Life Savers Mints",
