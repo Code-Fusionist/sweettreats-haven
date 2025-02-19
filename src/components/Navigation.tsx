@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { ShoppingCart, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { SearchBar } from "./SearchBar";
 
 export function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -48,11 +49,12 @@ export function Navigation() {
             to="/"
             className="text-2xl font-playfair font-semibold text-primary"
           >
-            SweetTreats
+            SweetCart
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
+            <SearchBar />
             <Link
               to="/products"
               className="text-primary hover:text-accent transition-colors"
@@ -103,6 +105,9 @@ export function Navigation() {
         {isMenuOpen && (
           <div className="md:hidden absolute top-16 left-0 right-0 bg-white shadow-lg animate-fade-down">
             <div className="px-4 py-2 space-y-4">
+              <div className="py-2">
+                <SearchBar />
+              </div>
               <Link
                 to="/products"
                 className="block text-primary hover:text-accent transition-colors py-2"
