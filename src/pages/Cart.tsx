@@ -70,7 +70,7 @@ const Cart = () => {
                   />
                   <div className="flex-1">
                     <h3 className="font-semibold text-lg">{item.name}</h3>
-                    <p className="text-gray-600">${item.price}</p>
+                    <p className="text-gray-600">₹{item.price}</p>
                   </div>
                   <div className="flex items-center gap-2">
                     <Button
@@ -103,7 +103,7 @@ const Cart = () => {
             <div className="p-6 bg-gray-50 rounded-b-lg">
               <div className="flex justify-between items-center mb-4">
                 <span className="font-semibold">Total</span>
-                <span className="text-xl font-bold">${total.toFixed(2)}</span>
+                <span className="text-xl font-bold">₹{total.toFixed(2)}</span>
               </div>
               <Button asChild className="w-full">
                 <Link to="/payment">Proceed to Payment</Link>
