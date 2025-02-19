@@ -80,6 +80,12 @@ export function Navigation() {
                 )}
               </Button>
             </Link>
+            <Link
+              to="/profile"
+              className="text-primary hover:text-accent transition-colors"
+            >
+              Profile
+            </Link>
             <AuthNav />
           </div>
 
@@ -117,6 +123,13 @@ export function Navigation() {
                 onClick={toggleMenu}
               >
                 Cart ({cartCount})
+              </Link>
+              <Link
+                to="/profile"
+                className="block text-primary hover:text-accent transition-colors py-2"
+                onClick={toggleMenu}
+              >
+                Profile
               </Link>
               <div className="py-2">
                 <AuthNav />
