@@ -233,7 +233,7 @@ const Products = () => {
                     />
                     <p className="text-gray-600 mb-4">{selectedProduct.details || selectedProduct.description}</p>
                     <div className="flex items-center justify-between">
-                      <span className="text-xl font-semibold">${selectedProduct.price}</span>
+                      <span className="text-xl font-semibold">₹{selectedProduct.price}</span>
                       <Button onClick={() => {
                         addToCart(selectedProduct);
                         setSelectedProduct(null);

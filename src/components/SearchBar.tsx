@@ -1,72 +1,73 @@
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {
-  CommandDialog,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
 import { products } from "@/pages/Products";
 
 export function SearchBar() {
-  const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [showResults, setShowResults] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const down = (e: KeyboardEvent) => {
-      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        setOpen((open) => !open);
-      }
-    };
-    document.addEventListener("keydown", down);
-    return () => document.removeEventListener("keydown", down);
-  }, []);
 
   const filteredProducts = products.filter((product) =>
     product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     product.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
     product.category.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  ).slice(0, 5); // Only show first 5 results
 
   const handleSelect = (productId: number) => {
-    setOpen(false);
+    setShowResults(false);
+    setSearchQuery("");
     navigate("/products", { state: { productId } });
   };
 
   return (
-    <>
-      <Button
-        variant="outline"
-        className="relative w-full justify-start text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64"
-        onClick={() => setOpen(true)}
-      >
-        <span className="hidden lg:inline-flex">Search products...</span>
-        <span className="inline-flex lg:hidden">Search...</span>
-        <kbd className="pointer-events-none absolute right-1.5 top-1.5 hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
-          <span className="text-xs">⌘</span>K
-        </kbd>
-      </Button>
-      <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput
-          placeholder="Search products..."
-          value={searchQuery}
-          onValueChange={setSearchQuery}
-        />
-        <CommandList>
-          <CommandEmpty>No results found.</CommandEmpty>
-          <CommandGroup heading="Products">
-            {filteredProducts.map((product) => (
-              <CommandItem
+    <div className="relative">
+      <div className="flex items-center">
+        <div className="relative flex-1">
+          <Input
+            type="text"
+            placeholder="Search products..."
+            value={searchQuery}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              setShowResults(e.target.value.length > 0);
+            }}
+            onFocus={() => setShowResults(searchQuery.length > 0)}
+            className="w-full pl-10"
+          />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        </div>
+        <Button 
+          variant="ghost" 
+          size="icon"
+          onClick={() => {
+            if (searchQuery) {
+              navigate("/products");
+            }
+          }}
+        >
+          <Search className="h-4 w-4" />
+        </Button>
+      </div>
+
+      {showResults && searchQuery && (
+        <div 
+          className="absolute top-full mt-1 w-full bg-white rounded-md shadow-lg border py-2 z-50"
+          onMouseLeave={() => setShowResults(false)}
+        >
+          {filteredProducts.length === 0 ? (
+            <div className="px-4 py-2 text-sm text-muted-foreground">
+              No results found
+            </div>
+          ) : (
+            filteredProducts.map((product) => (
+              <div
                 key={product.id}
-                onSelect={() => handleSelect(product.id)}
-                className="flex items-center gap-2 p-2"
+                className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-3"
+                onClick={() => handleSelect(product.id)}
               >
                 <img
                   src={product.image}
@@ -76,14 +77,14 @@ export function SearchBar() {
                 <div>
                   <p className="text-sm font-medium">{product.name}</p>
                   <p className="text-xs text-muted-foreground">
-                    ${product.price} - {product.category}
+                    ₹{product.price} - {product.category}
                   </p>
                 </div>
-              </CommandItem>
-            ))}
-          </CommandGroup>
-        </CommandList>
-      </CommandDialog>
-    </>
+              </div>
+            ))
+          )}
+        </div>
+      )}
+    </div>
   );
 }

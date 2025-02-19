@@ -1,16 +1,15 @@
-
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ShoppingCart, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { SearchBar } from "./SearchBar";
+import { AuthNav } from "./AuthNav";
 
 export function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [cartCount, setCartCount] = useState(0);
-  const { toast } = useToast();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,10 +26,8 @@ export function Navigation() {
       setCartCount(count);
     };
 
-    // Initial count
     updateCartCount();
 
-    // Listen for cart updates
     window.addEventListener('cartUpdated', updateCartCount);
     return () => window.removeEventListener('cartUpdated', updateCartCount);
   }, []);
@@ -52,7 +49,6 @@ export function Navigation() {
             SweetCart
           </Link>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             <SearchBar />
             <Link
@@ -60,12 +56,6 @@ export function Navigation() {
               className="text-primary hover:text-accent transition-colors"
             >
               Products
-            </Link>
-            <Link
-              to="/categories"
-              className="text-primary hover:text-accent transition-colors"
-            >
-              Categories
             </Link>
             <Link
               to="/tracking"
@@ -90,9 +80,9 @@ export function Navigation() {
                 )}
               </Button>
             </Link>
+            <AuthNav />
           </div>
 
-          {/* Mobile Menu Button */}
           <button
             onClick={toggleMenu}
             className="md:hidden text-primary focus:outline-none"
@@ -101,7 +91,6 @@ export function Navigation() {
           </button>
         </div>
 
-        {/* Mobile Navigation */}
         {isMenuOpen && (
           <div className="md:hidden absolute top-16 left-0 right-0 bg-white shadow-lg animate-fade-down">
             <div className="px-4 py-2 space-y-4">
@@ -114,13 +103,6 @@ export function Navigation() {
                 onClick={toggleMenu}
               >
                 Products
-              </Link>
-              <Link
-                to="/categories"
-                className="block text-primary hover:text-accent transition-colors py-2"
-                onClick={toggleMenu}
-              >
-                Categories
               </Link>
               <Link
                 to="/tracking"
@@ -136,6 +118,9 @@ export function Navigation() {
               >
                 Cart ({cartCount})
               </Link>
+              <div className="py-2">
+                <AuthNav />
+              </div>
             </div>
           </div>
         )}
