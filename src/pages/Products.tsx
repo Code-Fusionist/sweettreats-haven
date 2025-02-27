@@ -18,7 +18,7 @@ export const products = [
     description: "Smooth milk chocolate with rich cocoa",
     details: "Experience the silky smooth texture of premium milk chocolate. Made with the finest cocoa beans and fresh milk, this chocolate bar melts in your mouth for a heavenly experience.",
     price: 4.99,
-    image: "https://rukminim2.flixcart.com/image/850/1000/xif0q/chocolate/o/e/6/70-dairy-milk-silk-desserts-walnut-brownie-chocolate-bar-1-original-imah3kqugyz6mshn.jpeg?q=90&crop=false",
+    image: "https://db8hgexwnviud.cloudfront.net/images/detailed/2831/61UAkasfAPL.jpg?t=1697633388",
     category: "chocolates"
   },
   {
