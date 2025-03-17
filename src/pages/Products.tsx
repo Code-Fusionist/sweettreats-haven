@@ -177,12 +177,48 @@ export const products = [
 },
 {
     "id": 20,
-    "name": "Ferrero Collection",
+    "name": "Ferrero Rocher Gift Pack",
     "description": "Assorted luxury chocolates",
     "price": 27.99,
-    "image": "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80",
+    "image": "https://cdn.grofers.com/cdn-cgi/image/f=auto,fit=scale-down,q=70,metadata=none,w=450/da/cms-assets/cms/product/b9e1bb59-3832-49a6-b46c-077c388b1e34.jpg?ts=1738649982",
     "category": "gifts",
     "details": "A premium selection of Ferrero chocolates, including Ferrero Rocher, Raffaello, and Rondnoir."
+},
+{
+    "id": 21,
+    "name": "Snickers Bar",
+    "description": "Chocolate bar with nougat, caramel, and peanuts",
+    "price": 1.99,
+    "image": "https://m.media-amazon.com/images/I/51LRrilIFSL._SX522_.jpg",
+    "category": "chocolates",
+    "details": "A delicious combination of nougat, caramel, and roasted peanuts covered in smooth milk chocolate."
+},
+{
+    "id": 22,
+    "name": "Hershey's Milk Chocolate",
+    "description": "Classic creamy milk chocolate bar",
+    "price": 3.49,
+    "image": "https://m.media-amazon.com/images/I/51VWvwPHUJL._SX522_.jpg",
+    "category": "chocolates",
+    "details": "Smooth and creamy milk chocolate bar from Hershey's, a perfect treat for any occasion."
+},
+{
+    "id": 23,
+    "name": "Cadbury Celebrations Box",
+    "description": "Assorted Cadbury chocolates gift box",
+    "price": 12.99,
+    "image": "https://www.sendgiftsahmedabad.com/pub/media/catalog/product/cache/fe2a752764b2352ecdbaaa90a203554f/c/h/chocolate_gift_pack_with_cadbury_celebrations_box.jpg",
+    "category": "gifts",
+    "details": "A delightful mix of classic Cadbury chocolates, perfect for sharing and gifting."
+},
+{
+    "id": 24,
+    "name": "Lindt Lindor Truffles",
+    "description": "Irresistibly smooth chocolate truffles",
+    "price": 18.99,
+    "image": "https://www.chocolate.lindt.com/media/catalog/product/l/i/lindt_lindor_milk_chocolate_truffles_box_2.png?quality=80&fit=bounds&height=700&width=700&canvas=700:700",
+    "category": "truffles",
+    "details": "Delicious chocolate truffles with a smooth, melting center, available in various flavors."
 }
 ];
 
