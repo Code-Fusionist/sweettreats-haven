@@ -129,6 +129,15 @@ export const products = [
     "image": "https://images-cdn.ubuy.co.in/651ef2ea3da1af110d0f032c-life-savers-pep-o-mint-breath-mints-hard.jpg",
     "category": "candies",
     "details": "Classic ring-shaped mints that provide a refreshing burst of coolness. Perfect for freshening breath anytime, anywhere."
+},
+{
+    "id": 15,
+    "name": "KitKat Chunky",
+    "description": "Crispy wafer covered in milk chocolate",
+    "price": 2.49,
+    "image": "https://m.media-amazon.com/images/I/31BwdBH74WL._SX300_SY300_QL70_FMwebp_.jpg",
+    "category": "chocolates",
+    "details": "Enjoy the satisfying crunch of KitKat Chunky. A delicious crispy wafer covered in smooth milk chocolate."
 }
 ];
 
