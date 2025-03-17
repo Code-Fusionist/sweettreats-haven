@@ -138,6 +138,51 @@ export const products = [
     "image": "https://m.media-amazon.com/images/I/31BwdBH74WL._SX300_SY300_QL70_FMwebp_.jpg",
     "category": "chocolates",
     "details": "Enjoy the satisfying crunch of KitKat Chunky. A delicious crispy wafer covered in smooth milk chocolate."
+},
+{
+    "id": 16,
+    "name": "Toblerone",
+    "description": "Swiss milk chocolate with honey and almond nougat",
+    "price": 5.49,
+    "image": "https://m.media-amazon.com/images/I/61OQfk4rnQL._SX522_.jpg",
+    "category": "chocolates",
+    "details": "Iconic Swiss chocolate with a unique triangular shape, made with honey and almond nougat for a delicious treat."
+},
+{
+    "id": 17,
+    "name": "Godiva Gold Collection",
+    "description": "Premium assorted chocolate gift box",
+    "price": 39.99,
+    "image": "https://images-cdn.ubuy.co.in/633abfd5f43a8f731b7d9630-godivas-belgium-goldmark-assorted.jpg",
+    "category": "gifts",
+    "details": "An exquisite collection of handcrafted chocolates, including dark, milk, and white chocolate varieties."
+},
+{
+    "id": 18,
+    "name": "Baci Perugina",
+    "description": "Dark chocolate with hazelnut filling",
+    "price": 14.99,
+    "image": "https://images-cdn.ubuy.co.in/6615ee8a458b5132fb1aa791-perugina-baci-classic-dark-chocolate.jpg",
+    "category": "truffles",
+    "details": "A smooth dark chocolate shell with a luscious hazelnut filling, topped with a whole hazelnut."
+},
+{
+    "id": 19,
+    "name": "Altoids Peppermint",
+    "description": "Intensely strong peppermint mints",
+    "price": 3.49,
+    "image": "https://m.media-amazon.com/images/I/61piVNTqSOL._SX522_.jpg",
+    "category": "candies",
+    "details": "A classic tin of intensely strong peppermint mints, perfect for freshening breath on the go."
+},
+{
+    "id": 20,
+    "name": "Ferrero Collection",
+    "description": "Assorted luxury chocolates",
+    "price": 27.99,
+    "image": "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80",
+    "category": "gifts",
+    "details": "A premium selection of Ferrero chocolates, including Ferrero Rocher, Raffaello, and Rondnoir."
 }
 ];
 
