@@ -17,7 +17,7 @@ export const products = [
     name: "Dairy Milk Silk",
     description: "Smooth milk chocolate with rich cocoa",
     details: "Experience the silky smooth texture of premium milk chocolate. Made with the finest cocoa beans and fresh milk, this chocolate bar melts in your mouth for a heavenly experience.",
-    price: 4.99,
+    price: 199,
     image: "https://db8hgexwnviud.cloudfront.net/images/detailed/2831/61UAkasfAPL.jpg?t=1697633388",
     category: "chocolates"
   },
@@ -26,72 +26,72 @@ export const products = [
     name: "Lindt Excellence",
     description: "Premium dark chocolate with 70% cocoa",
     details: "Savor the intense flavor of 70% dark chocolate. Crafted by Swiss chocolatiers, this bar offers a perfect balance of bitterness and sweetness.",
-    price: 5.99,
-    image: "https://images.unsplash.com/photo-1614088685112-0a760b71a3c8?auto=format&fit=crop&q=80",
+    price: 799,
+    image: "https://m.media-amazon.com/images/I/41ZzWoi-KfL._SX300_SY300_QL70_FMwebp_.jpg",
     category: "chocolates"
   },
   {
     id: 3,
     name: "Premium Gift Box",
     description: "Assorted chocolates in an elegant box",
-    price: 29.99,
-    image: "https://images.unsplash.com/photo-1548741487-18d363dc4469?auto=format&fit=crop&q=80",
+    price: 2999,
+    image: "https://www.chokola.in/pub/media/catalog/product/cache/8913e99aadde0a1b971244e9cae421cf/s/w/sweet_memories_of_india_1_.jpg",
     category: "gifts"
   },
   {
     id: 4,
     name: "Truffle Collection",
     description: "Handcrafted chocolate truffles",
-    price: 19.99,
-    image: "https://images.unsplash.com/photo-1551529834-525807d6b4f3?auto=format&fit=crop&q=80",
+    price: 1599,
+    image: "https://atmospherestudio.in/cdn/shop/files/0D3A5747_1000x.jpg?v=1728281925",
     category: "truffles"
   },
   {
     id: 5,
     name: "Polo Mints",
     description: "Classic breath freshening mints",
-    price: 2.99,
-    image: "https://images.unsplash.com/photo-1582058091505-f87a2e55a40f?auto=format&fit=crop&q=80",
+    price: 309,
+    image: "https://m.media-amazon.com/images/I/716J75wkqTL._SX522_.jpg",
     category: "candies"
   },
   {
     id: 6,
     name: "Mentos Fresh",
     description: "Chewy mint candies",
-    price: 1.99,
-    image: "https://images.unsplash.com/photo-1582058091505-f87a2e55a40f?auto=format&fit=crop&q=80",
+    price: 179,
+    image: "https://www.bigbasket.com/media/uploads/p/l/40107653-2_6-mentos-pure-fresh-sugarfree-mint-flavour-chewing-gum.jpg",
     category: "candies"
   },
   {
     id: 7,
-    name: "Ferrero Rocher Box",
+    name: "Ferrero Rocher Moments",
     description: "Luxury chocolate gift box",
-    price: 24.99,
-    image: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80",
+    price: 249,
+    image: "https://m.media-amazon.com/images/I/61Gyg-yEcoL._SY450_PIbundle-16,TopRight,0,0_AA450SH20_.jpg",
     category: "gifts"
   },
   {
     id: 8,
-    name: "Dark Chocolate Truffles",
+    name: "Jus’Trufs Classic Chocolate Truffles",
     description: "Rich dark chocolate truffles",
-    price: 15.99,
-    image: "https://images.unsplash.com/photo-1551529834-525807d6b4f3?auto=format&fit=crop&q=80",
+    price: 699,
+    image: "https://m.media-amazon.com/images/I/91hOl6fxHEL._SX679_PIbundle-9,TopRight,0,0_SX679SY489SH20_.jpg",
     category: "truffles"
   },
   {
     id: 9,
     name: "Ghirardelli Squares",
-    description: "Premium chocolate squares",
-    price: 8.99,
-    image: "https://images.unsplash.com/photo-1614088685112-0a760b71a3c8?auto=format&fit=crop&q=80",
+    description: "Premium milk chocolate squares",
+    price: 2499,
+    image: "https://m.media-amazon.com/images/I/71PyqnEU8+L._SX522_.jpg",
     category: "chocolates"
   },
   {
     id: 10,
-    name: "Celebration Box",
-    description: "Mixed chocolate selection box",
-    price: 34.99,
-    image: "https://images.unsplash.com/photo-1548741487-18d363dc4469?auto=format&fit=crop&q=80",
+    name: "Assorted Dates Celebration Box",
+    description: "Premium Middle Eastern chocolate treat", 
+    price: 799,
+    image: "https://natuf.in/cdn/shop/files/DatesChococoated18pcs.png?v=1739389301&width=700",
     category: "gifts"
   },
   {
@@ -219,7 +219,61 @@ export const products = [
     "image": "https://www.chocolate.lindt.com/media/catalog/product/l/i/lindt_lindor_milk_chocolate_truffles_box_2.png?quality=80&fit=bounds&height=700&width=700&canvas=700:700",
     "category": "truffles",
     "details": "Delicious chocolate truffles with a smooth, melting center, available in various flavors."
-}
+},
+ {
+    "id": 25,
+    "name": "Tic Tac Fresh Mint",
+    "description": "Refreshing mint candies",
+    "price": 2.49,
+    "image": "https://images.unsplash.com/photo-1582058091505-f87a2e55a40f?auto=format&fit=crop&q=80",
+    "category": "candies",
+    "details": "Tiny, flavorful mint candies in a handy pocket-sized pack for long-lasting freshness."
+  },
+  {
+    "id": 26,
+    "name": "Raffaello Almond Coconut Treats",
+    "description": "White chocolate with coconut and almond",
+    "price": 10.99,
+    "image": "https://images.unsplash.com/photo-1551529834-525807d6b4f3?auto=format&fit=crop&q=80",
+    "category": "truffles",
+    "details": "A blend of white chocolate, coconut, and almonds, creating an indulgent and exotic treat."
+  },
+  {
+    "id": 27,
+    "name": "Nestlé Quality Street",
+    "description": "Assorted chocolates and toffees",
+    "price": 15.99,
+    "image": "https://images.unsplash.com/photo-1548741487-18d363dc4469?auto=format&fit=crop&q=80",
+    "category": "gifts",
+    "details": "A mix of individually wrapped chocolates and toffees, perfect for gifting and sharing."
+  },
+  {
+    "id": 28,
+    "name": "Mars Bar",
+    "description": "Chocolate bar with nougat and caramel",
+    "price": 2.99,
+    "image": "https://images.unsplash.com/photo-1571987503171-7e03830a2f15?auto=format&fit=crop&q=80",
+    "category": "chocolates",
+    "details": "Soft nougat and caramel coated in milk chocolate, offering a delicious and satisfying taste."
+  },
+  {
+    "id": 29,
+    "name": "Haribo Goldbears",
+    "description": "Classic gummy bear candy",
+    "price": 3.99,
+    "image": "https://images.unsplash.com/photo-1582058091505-f87a2e55a40f?auto=format&fit=crop&q=80",
+    "category": "candies",
+    "details": "Fruity and chewy gummy bears in a variety of flavors, loved by all ages."
+  },
+  {
+    "id": 30,
+    "name": "Dove Dark Chocolate",
+    "description": "Smooth and rich dark chocolate squares",
+    "price": 5.99,
+    "image": "https://images.unsplash.com/photo-1614088685112-0a760b71a3c8?auto=format&fit=crop&q=80",
+    "category": "chocolates",
+    "details": "Indulgent dark chocolate squares made with premium cocoa for a velvety taste experience."
+  }  
 ];
 
 const Products = () => {
