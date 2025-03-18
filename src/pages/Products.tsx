@@ -275,7 +275,7 @@ export const products = [
   },
   {
     "id": 30,
-    "name": Hu Hunks Vegan Chocolate",
+    "name": "Hu Hunks Vegan Chocolate",
     "description": "Smooth and rich dark chocolate squares",
     "price": 1699,
     "image": "https://m.media-amazon.com/images/I/61HhcX1mvLL._SX425_PIbundle-2,TopRight,0,0_AA425SH20_.jpg",
