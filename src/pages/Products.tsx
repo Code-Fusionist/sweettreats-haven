@@ -137,8 +137,8 @@ export const products = [
     "image": "https://images-cdn.ubuy.co.in/651ef2ea3da1af110d0f032c-life-savers-pep-o-mint-breath-mints-hard.jpg",
     "category": "candies",
     "details": "Classic ring-shaped mints that provide a refreshing burst of coolness. Perfect for freshening breath anytime, anywhere."
-},
-{
+  },
+  {
     "id": 15,
     "name": "KitKat Chunky",
     "description": "Crispy wafer covered in milk chocolate",
@@ -146,8 +146,8 @@ export const products = [
     "image": "https://m.media-amazon.com/images/I/31BwdBH74WL._SX300_SY300_QL70_FMwebp_.jpg",
     "category": "chocolates",
     "details": "Enjoy the satisfying crunch of KitKat Chunky. A delicious crispy wafer covered in smooth milk chocolate."
-},
-{
+  },
+  {
     "id": 16,
     "name": "Toblerone",
     "description": "Swiss milk chocolate with honey and almond nougat",
@@ -155,8 +155,8 @@ export const products = [
     "image": "https://m.media-amazon.com/images/I/61OQfk4rnQL._SX522_.jpg",
     "category": "chocolates",
     "details": "Iconic Swiss chocolate with a unique triangular shape, made with honey and almond nougat for a delicious treat."
-},
-{
+  },
+  {
     "id": 17,
     "name": "Godiva Gold Collection",
     "description": "Premium assorted chocolate gift box",
@@ -164,8 +164,8 @@ export const products = [
     "image": "https://images-cdn.ubuy.co.in/633abfd5f43a8f731b7d9630-godivas-belgium-goldmark-assorted.jpg",
     "category": "gifts",
     "details": "An exquisite collection of handcrafted chocolates, including dark, milk, and white chocolate varieties."
-},
-{
+  },
+  {
     "id": 18,
     "name": "Baci Perugina",
     "description": "Dark chocolate with hazelnut filling",
@@ -173,8 +173,8 @@ export const products = [
     "image": "https://images-cdn.ubuy.co.in/6615ee8a458b5132fb1aa791-perugina-baci-classic-dark-chocolate.jpg",
     "category": "truffles",
     "details": "A smooth dark chocolate shell with a luscious hazelnut filling, topped with a whole hazelnut."
-},
-{
+  },
+  {
     "id": 19,
     "name": "Altoids Peppermint",
     "description": "Intensely strong peppermint mints",
@@ -182,8 +182,8 @@ export const products = [
     "image": "https://m.media-amazon.com/images/I/61piVNTqSOL._SX522_.jpg",
     "category": "candies",
     "details": "A classic tin of intensely strong peppermint mints, perfect for freshening breath on the go."
-},
-{
+  },
+  {
     "id": 20,
     "name": "Ferrero Rocher Gift Pack",
     "description": "Assorted luxury chocolates",
@@ -191,8 +191,8 @@ export const products = [
     "image": "https://cdn.grofers.com/cdn-cgi/image/f=auto,fit=scale-down,q=70,metadata=none,w=450/da/cms-assets/cms/product/b9e1bb59-3832-49a6-b46c-077c388b1e34.jpg?ts=1738649982",
     "category": "gifts",
     "details": "A premium selection of Ferrero chocolates, including Ferrero Rocher, Raffaello, and Rondnoir."
-},
-{
+  },
+  {
     "id": 21,
     "name": "Snickers Bar",
     "description": "Chocolate bar with nougat, caramel, and peanuts",
@@ -200,8 +200,8 @@ export const products = [
     "image": "https://m.media-amazon.com/images/I/51LRrilIFSL._SX522_.jpg",
     "category": "chocolates",
     "details": "A delicious combination of nougat, caramel, and roasted peanuts covered in smooth milk chocolate."
-},
-{
+  },
+  {
     "id": 22,
     "name": "Hershey's Milk Chocolate",
     "description": "Classic creamy milk chocolate bar",
@@ -209,8 +209,8 @@ export const products = [
     "image": "https://m.media-amazon.com/images/I/51VWvwPHUJL._SX522_.jpg",
     "category": "chocolates",
     "details": "Smooth and creamy milk chocolate bar from Hershey's, a perfect treat for any occasion."
-},
-{
+  },
+  {
     "id": 23,
     "name": "Cadbury Celebrations Box",
     "description": "Assorted Cadbury chocolates gift box",
@@ -218,8 +218,8 @@ export const products = [
     "image": "https://www.sendgiftsahmedabad.com/pub/media/catalog/product/cache/fe2a752764b2352ecdbaaa90a203554f/c/h/chocolate_gift_pack_with_cadbury_celebrations_box.jpg",
     "category": "gifts",
     "details": "A delightful mix of classic Cadbury chocolates, perfect for sharing and gifting."
-},
-{
+  },
+  {
     "id": 24,
     "name": "Lindt Lindor Truffles",
     "description": "Irresistibly smooth chocolate truffles",
@@ -227,8 +227,8 @@ export const products = [
     "image": "https://www.chocolate.lindt.com/media/catalog/product/l/i/lindt_lindor_milk_chocolate_truffles_box_2.png?quality=80&fit=bounds&height=700&width=700&canvas=700:700",
     "category": "truffles",
     "details": "Delicious chocolate truffles with a smooth, melting center, available in various flavors."
-},
- {
+  },
+  {
     "id": 25,
     "name": "Tic Tac Fruit Adventure",
     "description": "Refreshing mint candies",
