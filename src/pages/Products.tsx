@@ -21,7 +21,7 @@ export const products = [
     image: "https://db8hgexwnviud.cloudfront.net/images/detailed/2831/61UAkasfAPL.jpg?t=1697633388",
     category: "chocolates"
   },
-   {
+  {
     "id": 2,
     "name": "Lindt Excellence",
     "description": "Premium dark chocolate with 70% cocoa",
