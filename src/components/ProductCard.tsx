@@ -14,6 +14,7 @@ type ProductCardProps = {
     price: number;
     image: string;
     category: string;
+    subcategory?: string;
   };
   onAddToCart: (product: any) => void;
   onProductSelect: (product: any) => void;
@@ -97,10 +98,21 @@ export function ProductCard({
         >
           <Heart className={inWishlist ? "fill-current" : ""} />
         </Button>
+        
+        {product.subcategory && (
+          <div className="absolute top-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+            {product.subcategory}
+          </div>
+        )}
       </div>
       <div className="p-4">
-        <h3 className="font-playfair font-semibold text-lg mb-2">{product.name}</h3>
-        <p className="text-gray-600 text-sm mb-4">{product.description}</p>
+        <div className="flex justify-between items-start mb-2">
+          <h3 className="font-playfair font-semibold text-lg">{product.name}</h3>
+          <span className="text-sm bg-primary/10 text-primary px-2 py-1 rounded">
+            {product.category}
+          </span>
+        </div>
+        <p className="text-gray-600 text-sm mb-4 line-clamp-2">{product.description}</p>
         <div className="flex items-center justify-between">
           <span className="text-lg font-semibold">₹{product.price}</span>
           <Button onClick={() => onAddToCart(product)}>Add to Cart</Button>
