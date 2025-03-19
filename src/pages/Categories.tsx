@@ -39,7 +39,13 @@ const Categories = () => {
           
           if (subcategoryError) throw subcategoryError;
           
-          const uniqueSubcategories = [...new Set(subcategoryData.map(item => item.subcategory))];
+          // Filter out any null values and extract only the subcategory string
+          const validSubcategories = subcategoryData
+            .filter(item => item.subcategory !== null)
+            .map(item => item.subcategory as string);
+          
+          // Remove duplicates
+          const uniqueSubcategories = [...new Set(validSubcategories)];
           
           fullCategoryData.push({
             category,

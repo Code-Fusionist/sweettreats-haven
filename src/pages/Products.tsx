@@ -34,7 +34,7 @@ export type Product = {
   price: number;
   image: string;
   category: string;
-  subcategory: string;
+  subcategory?: string;
 };
 
 const Products = () => {
@@ -51,6 +51,7 @@ const Products = () => {
   // Get filter parameters from URL
   const searchTerm = searchParams.get("search") || "";
   const categoryFilter = searchParams.get("category") || "";
+  const subcategoryFilter = searchParams.get("subcategory") || "";
   const sortBy = searchParams.get("sort") || "";
   const minPrice = Number(searchParams.get("minPrice") || 0);
   const maxPrice = Number(searchParams.get("maxPrice") || 5000);
@@ -66,6 +67,15 @@ const Products = () => {
       checkWishlistStatus();
     }
   }, [products, user]);
+
+  useEffect(() => {
+    // Initialize selected subcategories from URL if present
+    if (subcategoryFilter) {
+      setSelectedSubcategories([subcategoryFilter]);
+    } else {
+      setSelectedSubcategories([]);
+    }
+  }, [subcategoryFilter]);
 
   const fetchCategories = async () => {
     try {
@@ -92,7 +102,13 @@ const Products = () => {
         
         if (error) throw error;
         
-        subcategoriesMap[category] = [...new Set(data.map(item => item.subcategory))];
+        // Filter out any null values and extract only the subcategory string
+        const validSubcategories = data
+          .filter(item => item.subcategory !== null)
+          .map(item => item.subcategory as string);
+        
+        // Remove duplicates
+        subcategoriesMap[category] = [...new Set(validSubcategories)];
       }
       
       setSubcategories(subcategoriesMap);
@@ -117,8 +133,10 @@ const Products = () => {
       }
       
       // Apply subcategory filter if selected
-      if (selectedSubcategories.length > 0) {
-        query = query.in("subcategory", selectedSubcategories);
+      if (selectedSubcategories.length > 0 || subcategoryFilter) {
+        const subcats = selectedSubcategories.length > 0 ? 
+          selectedSubcategories : [subcategoryFilter];
+        query = query.in("subcategory", subcats);
       }
       
       // Apply price range filter
@@ -172,7 +190,7 @@ const Products = () => {
         }
       }
       
-      setProducts(filteredData);
+      setProducts(filteredData as Product[]);
     } catch (error: any) {
       console.error("Error fetching products:", error);
       toast({
