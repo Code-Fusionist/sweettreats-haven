@@ -17,6 +17,11 @@ export type WishlistItem = {
 };
 
 export const getWishlist = async () => {
+  const { data: session } = await supabase.auth.getSession();
+  if (!session.session?.user) {
+    throw new Error("User not authenticated");
+  }
+
   const { data, error } = await supabase
     .from("wishlists")
     .select(`
@@ -34,9 +39,17 @@ export const getWishlist = async () => {
 };
 
 export const addToWishlist = async (productId: number) => {
+  const { data: session } = await supabase.auth.getSession();
+  if (!session.session?.user) {
+    throw new Error("User not authenticated");
+  }
+
   const { data, error } = await supabase
     .from("wishlists")
-    .insert([{ product_id: productId }])
+    .insert([{ 
+      product_id: productId,
+      user_id: session.session.user.id
+    }])
     .select();
 
   if (error) {
@@ -52,10 +65,16 @@ export const addToWishlist = async (productId: number) => {
 };
 
 export const removeFromWishlist = async (productId: number) => {
+  const { data: session } = await supabase.auth.getSession();
+  if (!session.session?.user) {
+    throw new Error("User not authenticated");
+  }
+
   const { error } = await supabase
     .from("wishlists")
     .delete()
-    .eq("product_id", productId);
+    .eq("product_id", productId)
+    .eq("user_id", session.session.user.id);
 
   if (error) {
     console.error("Error removing from wishlist:", error);
@@ -66,10 +85,16 @@ export const removeFromWishlist = async (productId: number) => {
 };
 
 export const isInWishlist = async (productId: number) => {
+  const { data: session } = await supabase.auth.getSession();
+  if (!session.session?.user) {
+    return false;
+  }
+
   const { data, error } = await supabase
     .from("wishlists")
     .select("id")
     .eq("product_id", productId)
+    .eq("user_id", session.session.user.id)
     .maybeSingle();
 
   if (error) {

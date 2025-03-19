@@ -1,15 +1,18 @@
+
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ShoppingCart, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
 import { SearchBar } from "./SearchBar";
 import { AuthNav } from "./AuthNav";
+import { useAuth } from "@/contexts/AuthContext";
 
 export function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [cartCount, setCartCount] = useState(0);
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,6 +36,17 @@ export function Navigation() {
   }, []);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+  const handleProfileClick = (e: React.MouseEvent) => {
+    if (!user) {
+      e.preventDefault();
+      // Show login dialog instead of navigating to profile
+      const authNavButton = document.querySelector('[data-testid="auth-nav-button"]');
+      if (authNavButton && authNavButton instanceof HTMLElement) {
+        authNavButton.click();
+      }
+    }
+  };
 
   return (
     <nav
@@ -60,6 +74,7 @@ export function Navigation() {
             <Link
               to="/tracking"
               className="text-primary hover:text-accent transition-colors"
+              onClick={handleProfileClick}
             >
               Track Order
             </Link>
@@ -83,6 +98,7 @@ export function Navigation() {
             <Link
               to="/profile"
               className="text-primary hover:text-accent transition-colors"
+              onClick={handleProfileClick}
             >
               Profile
             </Link>
@@ -113,7 +129,10 @@ export function Navigation() {
               <Link
                 to="/tracking"
                 className="block text-primary hover:text-accent transition-colors py-2"
-                onClick={toggleMenu}
+                onClick={(e) => {
+                  toggleMenu();
+                  if (!user) handleProfileClick(e);
+                }}
               >
                 Track Order
               </Link>
@@ -127,7 +146,10 @@ export function Navigation() {
               <Link
                 to="/profile"
                 className="block text-primary hover:text-accent transition-colors py-2"
-                onClick={toggleMenu}
+                onClick={(e) => {
+                  toggleMenu();
+                  if (!user) handleProfileClick(e);
+                }}
               >
                 Profile
               </Link>

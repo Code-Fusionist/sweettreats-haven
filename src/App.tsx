@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { AuthGuard } from "@/components/AuthGuard";
 import Index from "./pages/Index";
 import Products from "./pages/Products";
 import Categories from "./pages/Categories";
@@ -35,14 +36,26 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/products" element={<Products />} />
               <Route path="/categories" element={<Categories />} />
-              <Route path="/tracking" element={<Tracking />} />
+              <Route path="/tracking" element={
+                <AuthGuard>
+                  <Tracking />
+                </AuthGuard>
+              } />
               <Route path="/cart" element={<Cart />} />
-              <Route path="/payment" element={<Payment />} />
+              <Route path="/payment" element={
+                <AuthGuard>
+                  <Payment />
+                </AuthGuard>
+              } />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/shipping" element={<Shipping />} />
               <Route path="/returns" element={<Returns />} />
-              <Route path="/profile" element={<Profile />} />
+              <Route path="/profile" element={
+                <AuthGuard>
+                  <Profile />
+                </AuthGuard>
+              } />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>

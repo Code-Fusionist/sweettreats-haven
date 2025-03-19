@@ -1,69 +1,60 @@
 
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { ProductCard } from "@/components/ProductCard";
 import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
+import { Loader2 } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
 import { isInWishlist } from "@/services/wishlist";
+import { useAuth } from "@/contexts/AuthContext";
+
+export type Product = {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  image: string;
+  category: string;
+};
 
 const Products = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [productWishlistStatus, setProductWishlistStatus] = useState<{[key: number]: boolean}>({});
+  const [searchParams] = useSearchParams();
+  const searchTerm = searchParams.get("search") || "";
   const { toast } = useToast();
   const { user } = useAuth();
-  const [products, setProducts] = useState<any[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [productWishlistStatus, setProductWishlistStatus] = useState<Record<number, boolean>>({});
-  const location = useLocation();
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [searchTerm]);
 
   useEffect(() => {
-    // Check for product ID from category page
-    const state = location.state as { productId?: number };
-    if (state?.productId) {
-      const product = products.find(p => p.id === state.productId);
-      if (product) {
-        setSelectedProduct(product);
-      }
-    }
-  }, [location, products]);
-
-  useEffect(() => {
-    if (user && products.length > 0) {
+    if (user) {
       checkWishlistStatus();
     }
-  }, [user, products]);
+  }, [products, user]);
 
   const fetchProducts = async () => {
     setIsLoading(true);
     try {
-      const { data, error } = await supabase
-        .from("products")
-        .select("*")
-        .order("name");
-
+      let query = supabase.from("products").select("*");
+      
+      if (searchTerm) {
+        query = query.ilike("name", `%${searchTerm}%`);
+      }
+      
+      const { data, error } = await query;
+      
       if (error) throw error;
       
-      if (data) {
-        setProducts(data);
-      }
+      setProducts(data || []);
     } catch (error: any) {
       console.error("Error fetching products:", error);
       toast({
-        title: "Error fetching products",
-        description: error.message,
+        title: "Error",
+        description: "Failed to load products",
         variant: "destructive",
       });
     } finally {
@@ -72,127 +63,95 @@ const Products = () => {
   };
 
   const checkWishlistStatus = async () => {
-    try {
-      const statuses: Record<number, boolean> = {};
-      
-      // This is inefficient for many products, but works for our demo
-      for (const product of products) {
-        statuses[product.id] = await isInWishlist(product.id);
+    if (!user || products.length === 0) return;
+    
+    const statusMap: {[key: number]: boolean} = {};
+    
+    for (const product of products) {
+      try {
+        statusMap[product.id] = await isInWishlist(product.id);
+      } catch (error) {
+        console.error(`Error checking wishlist status for product ${product.id}:`, error);
       }
-      
-      setProductWishlistStatus(statuses);
-    } catch (error) {
-      console.error("Error checking wishlist status:", error);
     }
+    
+    setProductWishlistStatus(statusMap);
   };
 
-  const addToCart = (product: any) => {
-    const currentCart = JSON.parse(localStorage.getItem('cart') || '[]');
+  const handleAddToCart = (product: Product) => {
+    // Get existing cart from localStorage
+    const existingCart = JSON.parse(localStorage.getItem("cart") || "[]");
     
-    const existingItemIndex = currentCart.findIndex((item: any) => item.id === product.id);
+    // Check if product already exists in cart
+    const existingItemIndex = existingCart.findIndex(
+      (item: any) => item.id === product.id
+    );
     
-    if (existingItemIndex > -1) {
-      currentCart[existingItemIndex].quantity += 1;
+    if (existingItemIndex !== -1) {
+      // If product exists, increase quantity
+      existingCart[existingItemIndex].quantity += 1;
     } else {
-      currentCart.push({ ...product, quantity: 1 });
+      // If product doesn't exist, add new item
+      existingCart.push({
+        ...product,
+        quantity: 1,
+      });
     }
     
-    localStorage.setItem('cart', JSON.stringify(currentCart));
+    // Save back to localStorage
+    localStorage.setItem("cart", JSON.stringify(existingCart));
+    
+    // Dispatch custom event to update cart count in Navigation
+    window.dispatchEvent(new Event("cartUpdated"));
     
     toast({
       title: "Added to cart",
-      description: `${product.name} has been added to your cart.`,
+      description: `${product.name} has been added to your cart`,
     });
-    
-    // Dispatch event to update cart count in navigation
-    window.dispatchEvent(new Event('cartUpdated'));
   };
 
-  const filteredProducts = selectedCategory === "all" 
-    ? products 
-    : products.filter(p => p.category === selectedCategory);
+  const handleProductSelect = (product: Product) => {
+    // For now just show a toast, in future we could navigate to product detail page
+    toast({
+      title: product.name,
+      description: `${product.description} - ₹${product.price}`,
+    });
+  };
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gray-50 py-12">
-        <div className="container mx-auto px-4 text-center">
-          <p>Loading products...</p>
-        </div>
-      </div>
-    );
-  }
+  const handleWishlistChange = () => {
+    checkWishlistStatus();
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="container mx-auto px-4">
-        <div className="mb-8">
-          <h1 className="text-4xl font-playfair font-bold text-center mb-8">Our Products</h1>
-          <div className="flex flex-wrap justify-center gap-4">
-            {categories.map((category) => (
-              <Button
-                key={category.value}
-                variant={selectedCategory === category.value ? "default" : "outline"}
-                onClick={() => setSelectedCategory(category.value)}
-                className="rounded-full"
-              >
-                {category.label}
-              </Button>
-            ))}
-          </div>
+    <div className="container mx-auto py-16 px-4">
+      <h1 className="text-4xl font-playfair font-bold text-center mb-8">
+        {searchTerm ? `Search results for "${searchTerm}"` : "Our Products"}
+      </h1>
+      
+      {isLoading ? (
+        <div className="flex justify-center items-center h-64">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {filteredProducts.map((product) => (
-            <ProductCard 
+      ) : products.length === 0 ? (
+        <div className="text-center text-gray-500 py-16">
+          {searchTerm ? "No products match your search criteria" : "No products available"}
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {products.map((product) => (
+            <ProductCard
               key={product.id}
               product={product}
-              onAddToCart={addToCart}
-              onProductSelect={setSelectedProduct}
-              isInWishlist={productWishlistStatus[product.id]}
-              onWishlistChange={checkWishlistStatus}
+              onAddToCart={handleAddToCart}
+              onProductSelect={handleProductSelect}
+              isInWishlist={productWishlistStatus[product.id] || false}
+              onWishlistChange={handleWishlistChange}
             />
           ))}
         </div>
-
-        <Dialog open={!!selectedProduct} onOpenChange={() => setSelectedProduct(null)}>
-          {selectedProduct && (
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>{selectedProduct.name}</DialogTitle>
-                <DialogDescription>
-                  <div className="mt-4">
-                    <img
-                      src={selectedProduct.image}
-                      alt={selectedProduct.name}
-                      className="w-full h-64 object-cover rounded-lg mb-4"
-                    />
-                    <p className="text-gray-600 mb-4">{selectedProduct.details || selectedProduct.description}</p>
-                    <div className="flex items-center justify-between">
-                      <span className="text-xl font-semibold">₹{selectedProduct.price}</span>
-                      <Button onClick={() => {
-                        addToCart(selectedProduct);
-                        setSelectedProduct(null);
-                      }}>
-                        Add to Cart
-                      </Button>
-                    </div>
-                  </div>
-                </DialogDescription>
-              </DialogHeader>
-            </DialogContent>
-          )}
-        </Dialog>
-      </div>
+      )}
     </div>
   );
 };
-
-const categories = [
-  { label: "All Products", value: "all" },
-  { label: "Chocolates", value: "chocolates" },
-  { label: "Candies", value: "candies" },
-  { label: "Gift Boxes", value: "gifts" },
-  { label: "Truffles", value: "truffles" }
-];
 
 export default Products;

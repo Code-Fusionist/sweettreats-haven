@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -22,6 +22,7 @@ import {
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu";
 import { Link } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 export function AuthNav() {
   const [isLogin, setIsLogin] = useState(true);
@@ -31,6 +32,7 @@ export function AuthNav() {
   const [isLoading, setIsLoading] = useState(false);
   
   const { user, signIn, signUp, signOut, profile, isAdmin } = useAuth();
+  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,15 +40,24 @@ export function AuthNav() {
     
     try {
       if (isLogin) {
-        await signIn(email, password);
+        const { error } = await signIn(email, password);
+        if (error) throw error;
       } else {
-        await signUp(email, password);
+        const { error } = await signUp(email, password);
+        if (error) throw error;
       }
       
       // Reset form only on success
       setEmail("");
       setPassword("");
       setOpen(false);
+    } catch (error: any) {
+      console.error("Authentication error:", error);
+      toast({
+        title: "Error",
+        description: error.message || "Authentication failed",
+        variant: "destructive",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -100,7 +111,7 @@ export function AuthNav() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">
+        <Button variant="outline" data-testid="auth-nav-button">
           {isLogin ? "Login" : "Sign Up"}
         </Button>
       </DialogTrigger>
@@ -136,6 +147,7 @@ export function AuthNav() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               disabled={isLoading}
+              minLength={6}
             />
           </div>
           <Button type="submit" className="w-full" disabled={isLoading}>
