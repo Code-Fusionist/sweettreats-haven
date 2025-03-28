@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import { Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import { Slider } from "@/components/ui/slider";
 import { useSearchParams } from "react-router-dom";
@@ -12,44 +11,51 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 type ProductFiltersProps = {
-  categories: string[];
-  subcategories: {[key: string]: string[]};
-  selectedSubcategories: string[];
   minPrice: number;
   maxPrice: number;
   deliveryTime: string;
-  onSubcategoryChange: (subcategory: string) => void;
+  sortBy: string;
   onApplyFilters: () => void;
 };
 
 export function ProductFilters({
-  categories,
-  subcategories,
-  selectedSubcategories,
   minPrice,
   maxPrice,
   deliveryTime,
-  onSubcategoryChange,
+  sortBy,
   onApplyFilters,
 }: ProductFiltersProps) {
   const [priceRange, setPriceRange] = useState<number[]>([minPrice || 0, maxPrice || 5000]);
   const [selectedDeliveryTime, setSelectedDeliveryTime] = useState<string>(deliveryTime);
+  const [selectedSort, setSelectedSort] = useState<string>(sortBy);
   const [searchParams, setSearchParams] = useSearchParams();
   
   useEffect(() => {
-    // Update price range when props change
+    // Update state when props change
     setPriceRange([minPrice || 0, maxPrice || 5000]);
     setSelectedDeliveryTime(deliveryTime);
-  }, [minPrice, maxPrice, deliveryTime]);
+    setSelectedSort(sortBy);
+  }, [minPrice, maxPrice, deliveryTime, sortBy]);
 
   const handlePriceChange = (values: number[]) => {
     setPriceRange(values);
   };
 
   const handleDeliveryTimeChange = (value: string) => {
-    setSelectedDeliveryTime(value === selectedDeliveryTime ? "" : value);
+    setSelectedDeliveryTime(value);
+  };
+  
+  const handleSortChange = (value: string) => {
+    setSelectedSort(value);
   };
 
   const applyFilters = () => {
@@ -67,6 +73,13 @@ export function ProductFilters({
       newParams.delete("delivery");
     }
     
+    // Update sort parameter
+    if (selectedSort) {
+      newParams.set("sort", selectedSort);
+    } else {
+      newParams.delete("sort");
+    }
+    
     // Update URL with new parameters
     setSearchParams(newParams);
     
@@ -78,35 +91,7 @@ export function ProductFilters({
     <div className="sticky top-24 bg-white p-4 rounded-lg border shadow-md">
       <h2 className="text-lg font-semibold mb-4">Filters</h2>
       
-      <Accordion type="multiple" className="w-full" defaultValue={["subcategories", "price", "delivery"]}>
-        <AccordionItem value="subcategories">
-          <AccordionTrigger>Subcategories</AccordionTrigger>
-          <AccordionContent>
-            <div className="space-y-2">
-              {Object.entries(subcategories).map(([category, categorySubcategories]) => (
-                <div key={category} className="space-y-1">
-                  <p className="font-medium text-sm">{category}</p>
-                  {categorySubcategories.map((subcategory) => (
-                    <div key={subcategory} className="flex items-center space-x-2 ml-2">
-                      <Checkbox 
-                        id={`subcategory-${subcategory}`} 
-                        checked={selectedSubcategories.includes(subcategory)}
-                        onCheckedChange={() => onSubcategoryChange(subcategory)}
-                      />
-                      <label 
-                        htmlFor={`subcategory-${subcategory}`}
-                        className="text-sm cursor-pointer"
-                      >
-                        {subcategory}
-                      </label>
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-        
+      <Accordion type="multiple" className="w-full" defaultValue={["price", "delivery", "sort"]}>
         <AccordionItem value="price">
           <AccordionTrigger>Price Range</AccordionTrigger>
           <AccordionContent>
@@ -135,30 +120,38 @@ export function ProductFilters({
           <AccordionTrigger>Delivery Time</AccordionTrigger>
           <AccordionContent>
             <div className="space-y-2">
-              <Button
-                variant={selectedDeliveryTime === "under-24h" ? "default" : "outline"}
-                size="sm"
-                className="w-full justify-start text-left"
-                onClick={() => handleDeliveryTimeChange("under-24h")}
-              >
-                Under 24 hours
-              </Button>
-              <Button
-                variant={selectedDeliveryTime === "1-2-days" ? "default" : "outline"}
-                size="sm"
-                className="w-full justify-start text-left"
-                onClick={() => handleDeliveryTimeChange("1-2-days")}
-              >
-                1-2 days
-              </Button>
-              <Button
-                variant={selectedDeliveryTime === "3-5-days" ? "default" : "outline"}
-                size="sm"
-                className="w-full justify-start text-left"
-                onClick={() => handleDeliveryTimeChange("3-5-days")}
-              >
-                3-5 days
-              </Button>
+              <Select value={selectedDeliveryTime} onValueChange={handleDeliveryTimeChange}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select delivery time" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">Any time</SelectItem>
+                  <SelectItem value="under-24h">Under 24 hours</SelectItem>
+                  <SelectItem value="1-2-days">1-2 days</SelectItem>
+                  <SelectItem value="3-5-days">3-5 days</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+        
+        <AccordionItem value="sort">
+          <AccordionTrigger>Sort By</AccordionTrigger>
+          <AccordionContent>
+            <div className="space-y-2">
+              <Select value={selectedSort} onValueChange={handleSortChange}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Sort products" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">Featured</SelectItem>
+                  <SelectItem value="price-asc">Price: Low to High</SelectItem>
+                  <SelectItem value="price-desc">Price: High to Low</SelectItem>
+                  <SelectItem value="name-asc">Name: A to Z</SelectItem>
+                  <SelectItem value="name-desc">Name: Z to A</SelectItem>
+                  <SelectItem value="rating-desc">Highest Rating</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </AccordionContent>
         </AccordionItem>
