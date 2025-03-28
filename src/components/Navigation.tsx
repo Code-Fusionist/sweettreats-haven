@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ShoppingCart, Menu, X, ChevronDown } from "lucide-react";
@@ -102,36 +101,21 @@ export function Navigation() {
                 <NavigationMenuItem>
                   <NavigationMenuTrigger>Products</NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="grid w-[500px] gap-3 p-4 md:w-[600px] md:grid-cols-2 lg:w-[700px]">
-                      <div className="col-span-2 mb-2">
-                        <NavigationMenuLink asChild>
-                          <Link
-                            to="/products"
-                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                          >
-                            <div className="text-sm font-medium leading-none">All Products</div>
-                            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                              Browse our full collection of premium sweets and treats
-                            </p>
-                          </Link>
-                        </NavigationMenuLink>
-                      </div>
+                    <div className="grid w-[500px] gap-3 p-4 md:w-[600px] md:grid-cols-1 lg:w-[700px]">
+                      <NavigationMenuLink asChild>
+                        <Link
+                          to="/products"
+                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                        >
+                          <div className="text-sm font-medium leading-none">All Products</div>
+                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                            Browse our full collection of premium sweets and treats
+                          </p>
+                        </Link>
+                      </NavigationMenuLink>
                       
-                      <div>
-                        {left.map((category) => (
-                          <NavigationMenuLink key={category} asChild>
-                            <Link
-                              to={`/products?category=${encodeURIComponent(category)}`}
-                              className="block select-none rounded-md p-2 text-sm leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                            >
-                              {category}
-                            </Link>
-                          </NavigationMenuLink>
-                        ))}
-                      </div>
-                      
-                      <div>
-                        {right.map((category) => (
+                      <div className="grid grid-cols-3 gap-2">
+                        {categories.map((category) => (
                           <NavigationMenuLink key={category} asChild>
                             <Link
                               to={`/products?category=${encodeURIComponent(category)}`}

@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { Filter } from "lucide-react";
+import { Filter, ArrowUpDown, ArrowUp, ArrowDown, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Slider } from "@/components/ui/slider";
@@ -93,7 +93,12 @@ export function ProductFilters({
       
       <Accordion type="multiple" className="w-full" defaultValue={["price", "delivery", "sort"]}>
         <AccordionItem value="price">
-          <AccordionTrigger>Price Range</AccordionTrigger>
+          <AccordionTrigger className="flex items-center">
+            <span className="flex items-center">
+              <ArrowUpDown className="mr-2 h-4 w-4" />
+              Price Range
+            </span>
+          </AccordionTrigger>
           <AccordionContent>
             <div className="space-y-4">
               <Slider 
@@ -145,11 +150,26 @@ export function ProductFilters({
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="">Featured</SelectItem>
-                  <SelectItem value="price-asc">Price: Low to High</SelectItem>
-                  <SelectItem value="price-desc">Price: High to Low</SelectItem>
+                  <SelectItem value="price-asc">
+                    <div className="flex items-center">
+                      <ArrowUp className="mr-2 h-4 w-4" />
+                      Price: Low to High
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="price-desc">
+                    <div className="flex items-center">
+                      <ArrowDown className="mr-2 h-4 w-4" />
+                      Price: High to Low
+                    </div>
+                  </SelectItem>
                   <SelectItem value="name-asc">Name: A to Z</SelectItem>
                   <SelectItem value="name-desc">Name: Z to A</SelectItem>
-                  <SelectItem value="rating-desc">Highest Rating</SelectItem>
+                  <SelectItem value="rating-desc">
+                    <div className="flex items-center">
+                      <Star className="mr-2 h-4 w-4" />
+                      Highest Rating
+                    </div>
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>

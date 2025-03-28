@@ -77,25 +77,16 @@ export function useProducts(
       
       if (error) throw error;
       
-      let filteredData = data || [];
-      
-      // Apply subcategory filter in JavaScript if needed
-      if (subcategoryFilter) {
-        filteredData = filteredData.filter(item => 
-          item.subcategory && item.subcategory.toLowerCase() === subcategoryFilter.toLowerCase()
-        );
-      }
-      
       // Transform the data to ensure all fields have values
-      const processedData = filteredData.map(item => ({
+      const processedData = (data || []).map(item => ({
         ...item,
-        subcategory: item.subcategory || '',
+        subcategory: item.subcategory || '', // Add subcategory field if it doesn't exist
         rating: item.rating || 0,
         reviews_count: item.reviews_count || 0,
         delivery_time: item.delivery_time || '3-5-days'
-      }));
+      })) as Product[];
       
-      setProducts(processedData as Product[]);
+      setProducts(processedData);
       console.log("Fetched products:", processedData);
     } catch (error: any) {
       console.error("Error fetching products:", error);

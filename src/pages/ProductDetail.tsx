@@ -38,7 +38,17 @@ const ProductDetail = () => {
         .single();
       
       if (error) throw error;
-      setProduct(data);
+      
+      // Process the product to ensure all required fields are present
+      const processedProduct: Product = {
+        ...data,
+        subcategory: data.subcategory || '', // Add subcategory if it doesn't exist
+        rating: data.rating || 0,
+        reviews_count: data.reviews_count || 0,
+        delivery_time: data.delivery_time || '3-5-days'
+      };
+      
+      setProduct(processedProduct);
     } catch (error) {
       console.error("Error fetching product:", error);
       toast({
@@ -55,7 +65,8 @@ const ProductDetail = () => {
     if (!user || !id) return;
     try {
       // Convert string id to number for wishlist check
-      const status = await isInWishlist(parseInt(id));
+      const productId = parseInt(id);
+      const status = await isInWishlist(productId);
       setInWishlist(status);
     } catch (error) {
       console.error("Error checking wishlist status:", error);
