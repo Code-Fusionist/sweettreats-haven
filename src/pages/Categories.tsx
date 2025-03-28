@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2 } from "lucide-react";
+import { useCategories } from "@/hooks/useCategories";
 
 type CategoryData = {
   category: string;
@@ -10,59 +11,21 @@ type CategoryData = {
 }
 
 const Categories = () => {
-  const [categoriesData, setCategoriesData] = useState<CategoryData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  const { categories, subcategories } = useCategories();
+  const [categoriesData, setCategoriesData] = useState<CategoryData[]>([]);
+  
   useEffect(() => {
-    const fetchCategories = async () => {
-      setIsLoading(true);
-      try {
-        // First get unique categories
-        const { data: categoryData, error: categoryError } = await supabase
-          .from("products")
-          .select("category")
-          .not("category", "is", null);
-        
-        if (categoryError) throw categoryError;
-        
-        const uniqueCategories = [...new Set(categoryData.map(item => item.category))];
-        
-        // Then for each category, get its subcategories
-        const fullCategoryData: CategoryData[] = [];
-        
-        for (const category of uniqueCategories) {
-          const { data: subcategoryData, error: subcategoryError } = await supabase
-            .from("products")
-            .select("subcategory")
-            .eq("category", category)
-            .not("subcategory", "is", null);
-          
-          if (subcategoryError) throw subcategoryError;
-          
-          // Filter out any null values and extract only the subcategory string
-          const validSubcategories = subcategoryData
-            .filter(item => item.subcategory !== null)
-            .map(item => item.subcategory as string);
-          
-          // Remove duplicates
-          const uniqueSubcategories = [...new Set(validSubcategories)];
-          
-          fullCategoryData.push({
-            category,
-            subcategories: uniqueSubcategories
-          });
-        }
-        
-        setCategoriesData(fullCategoryData);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchCategories();
-  }, []);
+    if (categories.length > 0) {
+      const formattedData: CategoryData[] = categories.map(category => ({
+        category,
+        subcategories: subcategories[category] || []
+      }));
+      
+      setCategoriesData(formattedData);
+      setIsLoading(false);
+    }
+  }, [categories, subcategories]);
 
   return (
     <div className="container mx-auto py-16 px-4">

@@ -1,11 +1,27 @@
 
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ShoppingCart, Menu, X } from "lucide-react";
+import { ShoppingCart, Menu, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SearchBar } from "./SearchBar";
 import { AuthNav } from "./AuthNav";
 import { useAuth } from "@/contexts/AuthContext";
+import { useCategories } from "@/hooks/useCategories";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,6 +29,7 @@ export function Navigation() {
   const [cartCount, setCartCount] = useState(0);
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { categories } = useCategories();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -51,7 +68,7 @@ export function Navigation() {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? "bg-white/80 backdrop-blur-md shadow-sm" : "bg-transparent"
+        isScrolled ? "bg-white shadow-md" : "bg-white/90 backdrop-blur-md"
       }`}
     >
       <div className="container mx-auto px-4">
@@ -65,12 +82,51 @@ export function Navigation() {
 
           <div className="hidden md:flex items-center space-x-8">
             <SearchBar />
+            
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                      <li className="col-span-2">
+                        <NavigationMenuLink asChild>
+                          <Link
+                            to="/products"
+                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                          >
+                            <div className="text-sm font-medium leading-none">All Products</div>
+                            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                              Browse our full collection of premium sweets and treats
+                            </p>
+                          </Link>
+                        </NavigationMenuLink>
+                      </li>
+                      {categories.map((category) => (
+                        <li key={category}>
+                          <NavigationMenuLink asChild>
+                            <Link
+                              to={`/products?category=${encodeURIComponent(category)}`}
+                              className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                            >
+                              <div className="text-sm font-medium leading-none">{category}</div>
+                            </Link>
+                          </NavigationMenuLink>
+                        </li>
+                      ))}
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
+            
             <Link
-              to="/products"
+              to="/categories"
               className="text-primary hover:text-accent transition-colors"
             >
-              Products
+              Categories
             </Link>
+            
             <Link
               to="/tracking"
               className="text-primary hover:text-accent transition-colors"
@@ -119,13 +175,41 @@ export function Navigation() {
               <div className="py-2">
                 <SearchBar />
               </div>
+              
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="w-full justify-between flex items-center">
+                    Products <ChevronDown className="ml-2 h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem>
+                    <Link to="/products" className="w-full" onClick={toggleMenu}>
+                      All Products
+                    </Link>
+                  </DropdownMenuItem>
+                  {categories.map((category) => (
+                    <DropdownMenuItem key={category}>
+                      <Link 
+                        to={`/products?category=${encodeURIComponent(category)}`} 
+                        className="w-full"
+                        onClick={toggleMenu}
+                      >
+                        {category}
+                      </Link>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+              
               <Link
-                to="/products"
+                to="/categories"
                 className="block text-primary hover:text-accent transition-colors py-2"
                 onClick={toggleMenu}
               >
-                Products
+                Categories
               </Link>
+              
               <Link
                 to="/tracking"
                 className="block text-primary hover:text-accent transition-colors py-2"

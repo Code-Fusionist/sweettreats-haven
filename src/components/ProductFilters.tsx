@@ -1,10 +1,11 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import { Slider } from "@/components/ui/slider";
+import { useSearchParams } from "react-router-dom";
 import {
   Accordion,
   AccordionContent,
@@ -35,7 +36,14 @@ export function ProductFilters({
 }: ProductFiltersProps) {
   const [priceRange, setPriceRange] = useState<number[]>([minPrice || 0, maxPrice || 5000]);
   const [selectedDeliveryTime, setSelectedDeliveryTime] = useState<string>(deliveryTime);
+  const [searchParams, setSearchParams] = useSearchParams();
   
+  useEffect(() => {
+    // Update price range when props change
+    setPriceRange([minPrice || 0, maxPrice || 5000]);
+    setSelectedDeliveryTime(deliveryTime);
+  }, [minPrice, maxPrice, deliveryTime]);
+
   const handlePriceChange = (values: number[]) => {
     setPriceRange(values);
   };
@@ -44,8 +52,30 @@ export function ProductFilters({
     setSelectedDeliveryTime(value === selectedDeliveryTime ? "" : value);
   };
 
+  const applyFilters = () => {
+    // Create new search params based on current ones
+    const newParams = new URLSearchParams(searchParams);
+    
+    // Update price range parameters
+    newParams.set("minPrice", priceRange[0].toString());
+    newParams.set("maxPrice", priceRange[1].toString());
+    
+    // Update delivery time parameter
+    if (selectedDeliveryTime) {
+      newParams.set("delivery", selectedDeliveryTime);
+    } else {
+      newParams.delete("delivery");
+    }
+    
+    // Update URL with new parameters
+    setSearchParams(newParams);
+    
+    // Call the provided callback to fetch products with new filters
+    onApplyFilters();
+  };
+
   return (
-    <div className="sticky top-24 bg-white p-4 rounded-lg border shadow-sm">
+    <div className="sticky top-24 bg-white p-4 rounded-lg border shadow-md">
       <h2 className="text-lg font-semibold mb-4">Filters</h2>
       
       <Accordion type="multiple" className="w-full" defaultValue={["subcategories", "price", "delivery"]}>
@@ -55,8 +85,9 @@ export function ProductFilters({
             <div className="space-y-2">
               {Object.entries(subcategories).map(([category, categorySubcategories]) => (
                 <div key={category} className="space-y-1">
+                  <p className="font-medium text-sm">{category}</p>
                   {categorySubcategories.map((subcategory) => (
-                    <div key={subcategory} className="flex items-center space-x-2">
+                    <div key={subcategory} className="flex items-center space-x-2 ml-2">
                       <Checkbox 
                         id={`subcategory-${subcategory}`} 
                         checked={selectedSubcategories.includes(subcategory)}
@@ -135,7 +166,7 @@ export function ProductFilters({
       
       <Separator className="my-4" />
       
-      <Button className="w-full" onClick={onApplyFilters}>
+      <Button className="w-full" onClick={applyFilters}>
         <Filter className="mr-2 h-4 w-4" />
         Apply Filters
       </Button>

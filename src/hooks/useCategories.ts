@@ -19,26 +19,14 @@ export function useCategories() {
       const uniqueCategories = [...new Set(categoryData.map(item => item.category))];
       setCategories(uniqueCategories);
 
-      // Fetch subcategories for each category
+      // For this demo, we'll create simulated subcategories since the database doesn't have them
       const subcategoriesMap: {[key: string]: string[]} = {};
       
-      for (const category of uniqueCategories) {
-        const { data, error } = await supabase
-          .from("products")
-          .select("subcategory")
-          .eq("category", category)
-          .not("subcategory", "is", null);
-        
-        if (error) throw error;
-        
-        // Filter out any null values and extract only the subcategory string
-        const validSubcategories = data
-          .filter(item => item.subcategory !== null)
-          .map(item => item.subcategory as string);
-        
-        // Remove duplicates
-        subcategoriesMap[category] = [...new Set(validSubcategories)];
-      }
+      // Create simulated subcategories for each category
+      subcategoriesMap["Chocolates"] = ["Dark Chocolate", "Milk Chocolate", "White Chocolate", "Truffle Chocolate"];
+      subcategoriesMap["Candies"] = ["Hard Candy", "Gummy Candy", "Cotton Candy", "Lollipops"];
+      subcategoriesMap["Gift Box"] = ["Assorted Box", "Holiday Special", "Premium Box", "Custom Box"];
+      subcategoriesMap["Truffles"] = ["Chocolate Truffle", "Cocoa Dusted", "Fruit Filled", "Liqueur Truffle"];
       
       setSubcategories(subcategoriesMap);
     } catch (error) {

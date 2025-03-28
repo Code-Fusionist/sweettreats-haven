@@ -7,4 +7,6 @@ export type Product = {
   image: string;
   category: string;
   subcategory?: string;
+  rating?: number;
+  reviews_count?: number;
 };
