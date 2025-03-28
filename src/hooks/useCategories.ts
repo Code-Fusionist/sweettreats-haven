@@ -5,8 +5,10 @@ import { supabase } from "@/integrations/supabase/client";
 export function useCategories() {
   const [categories, setCategories] = useState<string[]>([]);
   const [subcategories, setSubcategories] = useState<{[key: string]: string[]}>({});
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchCategories = async () => {
+    setIsLoading(true);
     try {
       // Fetch unique categories
       const { data: categoryData, error: categoryError } = await supabase
@@ -16,10 +18,13 @@ export function useCategories() {
       
       if (categoryError) throw categoryError;
       
-      const uniqueCategories = [...new Set(categoryData.map(item => item.category))];
+      const uniqueCategories = [...new Set(categoryData
+        .map(item => item.category)
+        .filter(Boolean))] as string[];
+      
       setCategories(uniqueCategories);
 
-      // For this demo, we'll create simulated subcategories since the database doesn't have them
+      // For this demo, we'll create simulated subcategories for each category
       const subcategoriesMap: {[key: string]: string[]} = {};
       
       // Create simulated subcategories for each category
@@ -31,6 +36,8 @@ export function useCategories() {
       setSubcategories(subcategoriesMap);
     } catch (error) {
       console.error("Error fetching categories:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -38,5 +45,5 @@ export function useCategories() {
     fetchCategories();
   }, []);
 
-  return { categories, subcategories, fetchCategories };
+  return { categories, subcategories, fetchCategories, isLoading };
 }

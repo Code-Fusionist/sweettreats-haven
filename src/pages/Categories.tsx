@@ -1,7 +1,6 @@
 
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
 import { Loader2 } from "lucide-react";
 import { useCategories } from "@/hooks/useCategories";
 
@@ -11,8 +10,7 @@ type CategoryData = {
 }
 
 const Categories = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const { categories, subcategories } = useCategories();
+  const { categories, subcategories, isLoading } = useCategories();
   const [categoriesData, setCategoriesData] = useState<CategoryData[]>([]);
   
   useEffect(() => {
@@ -23,7 +21,6 @@ const Categories = () => {
       }));
       
       setCategoriesData(formattedData);
-      setIsLoading(false);
     }
   }, [categories, subcategories]);
 

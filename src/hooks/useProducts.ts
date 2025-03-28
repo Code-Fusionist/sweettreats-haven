@@ -72,15 +72,20 @@ export function useProducts(
       
       let filteredData = data || [];
       
-      // Apply subcategory filter in JavaScript since our database doesn't have subcategories
-      // For real implementation, this would be a database query
-      if (selectedSubcategories.length > 0 || subcategoryFilter) {
-        // This is a simulated filter that doesn't affect the actual data
-        // In a real application with subcategories in the database, we'd use the database query
+      // Apply subcategory filter in JavaScript
+      // This is a simulation since our database doesn't have subcategories column yet
+      if (selectedSubcategories.length > 0) {
+        console.log("Filtering by subcategories:", selectedSubcategories);
+        // In a real app, you would filter by subcategory in the database query
+        // For this demo, we'll just log the filter without actually filtering
+      } else if (subcategoryFilter) {
+        console.log("Filtering by subcategory:", subcategoryFilter);
+        // Same as above, just logging for the demo
       }
       
-      // For delivery time filter - in a real app this would be a database column
+      // For delivery time filter - simulate with product IDs
       if (deliveryTime) {
+        console.log("Filtering by delivery time:", deliveryTime);
         switch(deliveryTime) {
           case "under-24h":
             // Simulate delivery time filter - products with IDs divisible by 2 are "fast delivery"
@@ -97,7 +102,16 @@ export function useProducts(
         }
       }
       
-      setProducts(filteredData as Product[]);
+      // Transform the data to ensure all fields have values
+      const processedData = filteredData.map(item => ({
+        ...item,
+        subcategory: item.subcategory || '',
+        rating: item.rating || 0,
+        reviews_count: item.reviews_count || 0
+      }));
+      
+      setProducts(processedData as Product[]);
+      console.log("Fetched products:", processedData);
     } catch (error: any) {
       console.error("Error fetching products:", error);
       toast({

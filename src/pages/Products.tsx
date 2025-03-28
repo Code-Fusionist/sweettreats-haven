@@ -138,15 +138,22 @@ const Products = () => {
   const handleCategorySelect = (category: string) => {
     setSelectedCategory(category === "all" ? "" : category);
     setSelectedSubcategories([]);
+    
+    // Update URL to reflect category change
+    const newParams = new URLSearchParams(searchParams);
+    if (category === "all") {
+      newParams.delete("category");
+    } else {
+      newParams.set("category", category);
+    }
+    newParams.delete("subcategory");
+    setSearchParams(newParams);
   };
 
   // Predefined category lists for the top filter
   const predefinedCategories = [
     { id: "all", name: "All Products" },
-    { id: "Chocolates", name: "Chocolates" },
-    { id: "Candies", name: "Candies" },
-    { id: "Gift Box", name: "Gift Boxes" },
-    { id: "Truffles", name: "Truffles" }
+    ...categories.map(category => ({ id: category, name: category }))
   ];
 
   return (
@@ -175,8 +182,8 @@ const Products = () => {
         {/* Sidebar Filters */}
         <div className="md:col-span-1">
           <ProductFilters 
-            categories={[]}  // Remove categories from filters
-            subcategories={subcategories}
+            categories={[]}  // Remove categories from filters since we have them in the top buttons
+            subcategories={selectedCategory ? (subcategories[selectedCategory] || []) : []}
             selectedSubcategories={selectedSubcategories}
             minPrice={minPrice}
             maxPrice={maxPrice}

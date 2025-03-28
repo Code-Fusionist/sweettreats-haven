@@ -11,10 +11,9 @@ import {
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
+  NavigationMenuLink,
 } from "@/components/ui/navigation-menu";
 import {
   DropdownMenu,
@@ -29,7 +28,7 @@ export function Navigation() {
   const [cartCount, setCartCount] = useState(0);
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { categories } = useCategories();
+  const { categories, isLoading } = useCategories();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -73,6 +72,7 @@ export function Navigation() {
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
+          {/* Logo */}
           <Link
             to="/"
             className="text-2xl font-playfair font-semibold text-primary"
@@ -80,15 +80,18 @@ export function Navigation() {
             SweetCart
           </Link>
 
-          <div className="hidden md:flex items-center space-x-8">
-            <SearchBar />
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center justify-end space-x-6 flex-1">
+            <div className="flex-grow max-w-md">
+              <SearchBar />
+            </div>
             
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
                   <NavigationMenuTrigger>Products</NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                    <ul className="grid w-[400px] gap-2 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                       <li className="col-span-2">
                         <NavigationMenuLink asChild>
                           <Link
@@ -107,7 +110,7 @@ export function Navigation() {
                           <NavigationMenuLink asChild>
                             <Link
                               to={`/products?category=${encodeURIComponent(category)}`}
-                              className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                              className="block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                             >
                               <div className="text-sm font-medium leading-none">{category}</div>
                             </Link>
@@ -129,11 +132,12 @@ export function Navigation() {
             
             <Link
               to="/tracking"
-              className="text-primary hover:text-accent transition-colors"
+              className="text-primary hover:text-accent transition-colors whitespace-nowrap"
               onClick={handleProfileClick}
             >
               Track Order
             </Link>
+            
             <Link
               to="/cart"
               className="text-primary hover:text-accent transition-colors"
@@ -151,16 +155,19 @@ export function Navigation() {
                 )}
               </Button>
             </Link>
+            
             <Link
               to="/profile"
-              className="text-primary hover:text-accent transition-colors"
+              className="text-primary hover:text-accent transition-colors whitespace-nowrap"
               onClick={handleProfileClick}
             >
               Profile
             </Link>
+            
             <AuthNav />
           </div>
 
+          {/* Mobile Menu Button */}
           <button
             onClick={toggleMenu}
             className="md:hidden text-primary focus:outline-none"
@@ -169,6 +176,7 @@ export function Navigation() {
           </button>
         </div>
 
+        {/* Mobile Menu */}
         {isMenuOpen && (
           <div className="md:hidden absolute top-16 left-0 right-0 bg-white shadow-lg animate-fade-down">
             <div className="px-4 py-2 space-y-4">
@@ -182,7 +190,7 @@ export function Navigation() {
                     Products <ChevronDown className="ml-2 h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent>
+                <DropdownMenuContent className="w-full">
                   <DropdownMenuItem>
                     <Link to="/products" className="w-full" onClick={toggleMenu}>
                       All Products
@@ -220,6 +228,7 @@ export function Navigation() {
               >
                 Track Order
               </Link>
+              
               <Link
                 to="/cart"
                 className="block text-primary hover:text-accent transition-colors py-2"
@@ -227,6 +236,7 @@ export function Navigation() {
               >
                 Cart ({cartCount})
               </Link>
+              
               <Link
                 to="/profile"
                 className="block text-primary hover:text-accent transition-colors py-2"
@@ -237,6 +247,7 @@ export function Navigation() {
               >
                 Profile
               </Link>
+              
               <div className="py-2">
                 <AuthNav />
               </div>
