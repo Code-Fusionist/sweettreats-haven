@@ -3,9 +3,9 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { isInWishlist } from "@/services/wishlist";
-import { SearchBar } from "@/components/SearchBar";
 import { ProductFilters } from "@/components/ProductFilters";
 import { ProductGrid } from "@/components/ProductGrid";
+import { Button } from "@/components/ui/button";
 import { useProducts } from "@/hooks/useProducts";
 import { useCategories } from "@/hooks/useCategories";
 import { Product } from "@/types/product";
@@ -14,7 +14,8 @@ import { useToast } from "@/hooks/use-toast";
 const Products = () => {
   const [selectedSubcategories, setSelectedSubcategories] = useState<string[]>([]);
   const [productWishlistStatus, setProductWishlistStatus] = useState<{[key: number]: boolean}>({});
-  const [searchParams] = useSearchParams();
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [searchParams, setSearchParams] = useSearchParams();
   const { toast } = useToast();
   const { user } = useAuth();
 
@@ -31,7 +32,7 @@ const Products = () => {
   const { categories, subcategories } = useCategories();
   const { products, isLoading, fetchProducts } = useProducts(
     searchTerm,
-    categoryFilter,
+    selectedCategory || categoryFilter,
     subcategoryFilter,
     sortBy,
     minPrice,
@@ -39,6 +40,13 @@ const Products = () => {
     deliveryTime,
     selectedSubcategories
   );
+
+  // Initialize category selection from URL
+  useEffect(() => {
+    if (categoryFilter) {
+      setSelectedCategory(categoryFilter);
+    }
+  }, [categoryFilter]);
 
   // Initialize selected subcategories from URL if present
   useEffect(() => {
@@ -52,7 +60,7 @@ const Products = () => {
   // Fetch products when filters change
   useEffect(() => {
     fetchProducts();
-  }, [searchParams]);
+  }, [searchParams, selectedCategory]);
 
   // Check wishlist status when products or user change
   useEffect(() => {
@@ -120,34 +128,54 @@ const Products = () => {
   };
 
   const handleProductSelect = (product: Product) => {
-    // For now just show a toast, in future we could navigate to product detail page
-    toast({
-      title: product.name,
-      description: `${product.description} - ₹${product.price}`,
-    });
+    // Navigate to product detail page is now handled in ProductCard component
   };
 
   const handleWishlistChange = () => {
     checkWishlistStatus();
   };
 
+  const handleCategorySelect = (category: string) => {
+    setSelectedCategory(category === "all" ? "" : category);
+    setSelectedSubcategories([]);
+  };
+
+  // Predefined category lists for the top filter
+  const predefinedCategories = [
+    { id: "all", name: "All Products" },
+    { id: "Chocolates", name: "Chocolates" },
+    { id: "Candies", name: "Candies" },
+    { id: "Gift Box", name: "Gift Boxes" },
+    { id: "Truffles", name: "Truffles" }
+  ];
+
   return (
     <div className="container mx-auto py-16 px-4">
       <h1 className="text-4xl font-playfair font-bold text-center mb-8">
-        {categoryFilter ? `${categoryFilter} Products` : 
-         searchTerm ? `Search results for "${searchTerm}"` : 
-         "All Products"}
+        Our Products
       </h1>
       
-      <div className="flex justify-center mb-8">
-        <SearchBar />
+      {/* Categories section */}
+      <div className="flex justify-center mb-10 overflow-x-auto pb-4">
+        <div className="flex space-x-2">
+          {predefinedCategories.map((category) => (
+            <Button
+              key={category.id}
+              variant={selectedCategory === category.id || (category.id === "all" && !selectedCategory) ? "default" : "outline"}
+              onClick={() => handleCategorySelect(category.id)}
+              className="whitespace-nowrap"
+            >
+              {category.name}
+            </Button>
+          ))}
+        </div>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Sidebar Filters */}
         <div className="md:col-span-1">
           <ProductFilters 
-            categories={categories}
+            categories={[]}  // Remove categories from filters
             subcategories={subcategories}
             selectedSubcategories={selectedSubcategories}
             minPrice={minPrice}

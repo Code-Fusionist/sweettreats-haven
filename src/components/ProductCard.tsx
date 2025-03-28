@@ -1,5 +1,6 @@
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
@@ -33,6 +34,7 @@ export function ProductCard({
   const [isWishlistLoading, setIsWishlistLoading] = useState(false);
   const { user } = useAuth();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleWishlistToggle = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -76,12 +78,21 @@ export function ProductCard({
     }
   };
 
+  const handleCardClick = () => {
+    navigate(`/product/${product.id}`);
+  };
+
+  const handleAddToCartClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onAddToCart(product);
+  };
+
   return (
-    <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-      <div 
-        className="aspect-square overflow-hidden cursor-pointer relative"
-        onClick={() => onProductSelect(product)}
-      >
+    <div 
+      className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+      onClick={handleCardClick}
+    >
+      <div className="aspect-square overflow-hidden relative">
         <img
           src={product.image}
           alt={product.name}
@@ -115,7 +126,7 @@ export function ProductCard({
         <p className="text-gray-600 text-sm mb-4 line-clamp-2">{product.description}</p>
         <div className="flex items-center justify-between">
           <span className="text-lg font-semibold">₹{product.price}</span>
-          <Button onClick={() => onAddToCart(product)}>Add to Cart</Button>
+          <Button onClick={handleAddToCartClick}>Add to Cart</Button>
         </div>
       </div>
     </div>

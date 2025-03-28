@@ -2,21 +2,13 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { ProductCard } from "@/components/ProductCard";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { isInWishlist } from "@/services/wishlist";
-
-type Product = {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-  category: string;
-};
+import { Product } from "@/types/product";
+import { StarIcon } from "lucide-react";
 
 const Index = () => {
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
@@ -116,23 +108,24 @@ const Index = () => {
 
   return (
     <div>
-      {/* Hero Section */}
-      <section className="relative h-[80vh] flex items-center">
-        <div className="absolute inset-0 bg-black/40" />
+      {/* Hero Section with Full-screen Background */}
+      <section className="relative h-screen flex items-center">
+        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/placeholder.svg')" }} />
+        <div className="absolute inset-0 bg-black/60" />
         <div className="container mx-auto px-4 z-10 text-center text-white">
-          <h1 className="text-5xl font-playfair font-bold mb-6">
-            Discover Premium Sweets & Treats
+          <h1 className="text-4xl md:text-6xl font-playfair font-bold mb-4">
+            Welcome to SweetTreats Haven
           </h1>
-          <p className="text-xl max-w-2xl mx-auto mb-8">
+          <h2 className="text-2xl md:text-4xl font-playfair font-medium mb-6">
+            Discover Premium Sweets & Treats
+          </h2>
+          <p className="text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
             Indulge in our signature collection of handcrafted sweets and delicacies,
             perfect for every occasion or a sweet little treat for yourself.
           </p>
           <div className="flex justify-center gap-4">
             <Button size="lg" asChild>
               <Link to="/products">Shop Now</Link>
-            </Button>
-            <Button size="lg" variant="outline" className="text-white border-white hover:bg-white/10" asChild>
-              <Link to="/about">Learn More</Link>
             </Button>
           </div>
         </div>
@@ -141,15 +134,7 @@ const Index = () => {
       {/* Featured Products Section */}
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center mb-12">
-            <h2 className="text-3xl font-playfair font-bold">Featured Products</h2>
-            <Button variant="ghost" className="flex items-center gap-2" asChild>
-              <Link to="/products">
-                View All
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </Button>
-          </div>
+          <h2 className="text-3xl font-playfair font-bold text-center mb-12">Featured Products</h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {loading ? (
@@ -176,50 +161,49 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Categories Section */}
+      {/* Customer Reviews Section (Replacing Shop by Category) */}
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-playfair font-bold text-center mb-12">Shop by Category</h2>
+          <h2 className="text-3xl font-playfair font-bold text-center mb-12">What Our Customers Say</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Link to="/products?category=Sweet" className="group">
-              <div className="bg-amber-100 rounded-lg overflow-hidden h-64 flex items-center justify-center relative hover:shadow-lg transition-shadow">
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                <h3 className="text-2xl font-playfair font-semibold text-white relative z-10">Sweets</h3>
+            {reviews.map((review, index) => (
+              <div key={index} className="bg-white p-6 rounded-lg shadow-sm">
+                <div className="flex items-center mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <StarIcon 
+                      key={i} 
+                      className={`h-5 w-5 ${i < review.rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`} 
+                    />
+                  ))}
+                </div>
+                <p className="italic mb-4">{review.comment}</p>
+                <div className="font-semibold">{review.name}</div>
               </div>
-            </Link>
-            <Link to="/products?category=Savory" className="group">
-              <div className="bg-green-100 rounded-lg overflow-hidden h-64 flex items-center justify-center relative hover:shadow-lg transition-shadow">
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                <h3 className="text-2xl font-playfair font-semibold text-white relative z-10">Savory</h3>
-              </div>
-            </Link>
-            <Link to="/products?category=Gift Box" className="group">
-              <div className="bg-purple-100 rounded-lg overflow-hidden h-64 flex items-center justify-center relative hover:shadow-lg transition-shadow">
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                <h3 className="text-2xl font-playfair font-semibold text-white relative z-10">Gift Boxes</h3>
-              </div>
-            </Link>
+            ))}
           </div>
-          <div className="text-center mt-8">
-            <Button asChild>
-              <Link to="/categories">View All Categories</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Newsletter */}
-      <section className="py-16 bg-primary text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-playfair font-bold mb-4">Join Our Newsletter</h2>
-          <p className="mb-8 max-w-2xl mx-auto">
-            Subscribe to our newsletter and get 10% off your first purchase plus updates on new arrivals and special offers.
-          </p>
-          {/* Newsletter form would go here */}
         </div>
       </section>
     </div>
   );
 };
+
+// Sample reviews data (in a real app, this would come from the database)
+const reviews = [
+  {
+    name: "Sarah Johnson",
+    rating: 5,
+    comment: "The assorted chocolate box was perfect for my anniversary celebration. Everyone loved the variety and quality of flavors!"
+  },
+  {
+    name: "Michael Chen",
+    rating: 4,
+    comment: "I ordered the gift box for my mother's birthday. The packaging was beautiful and the sweets were delicious. Will order again."
+  },
+  {
+    name: "Priya Sharma",
+    rating: 5,
+    comment: "The handcrafted chocolates are truly exceptional. You can taste the quality and care put into making them. Highly recommend!"
+  }
+];
 
 export default Index;

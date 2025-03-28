@@ -10,6 +10,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { AuthGuard } from "@/components/AuthGuard";
 import Index from "./pages/Index";
 import Products from "./pages/Products";
+import ProductDetail from "./pages/ProductDetail";
 import Categories from "./pages/Categories";
 import Tracking from "./pages/Tracking";
 import NotFound from "./pages/NotFound";
@@ -35,12 +36,9 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/products" element={<Products />} />
+              <Route path="/product/:id" element={<ProductDetail />} />
               <Route path="/categories" element={<Categories />} />
-              <Route path="/tracking" element={
-                <AuthGuard>
-                  <Tracking />
-                </AuthGuard>
-              } />
+              <Route path="/tracking" element={<Tracking />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/payment" element={
                 <AuthGuard>
