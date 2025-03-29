@@ -27,10 +27,10 @@ const Shipping = () => {
             <section className="mb-8">
               <h2 className="text-2xl font-playfair font-semibold mb-4">Shipping Rates</h2>
               <ul className="list-disc pl-6 space-y-2 text-gray-600">
-                <li>Standard Shipping: $5.99</li>
-                <li>Express Shipping: $12.99</li>
-                <li>Next Day Delivery: $24.99</li>
-                <li>Free shipping on orders over $50</li>
+                <li>Standard Shipping: ₹40</li>
+                <li>Express Shipping: ₹80</li>
+                <li>Next Day Delivery: ₹120</li>
+                <li>Free shipping on orders over ₹500</li>
               </ul>
             </section>
 
