@@ -55,7 +55,8 @@ const ProductDetail = () => {
     if (!user || !id) return;
     try {
       // Convert string id to number for wishlist check
-      const status = await isInWishlist(parseInt(id));
+      const productId = parseInt(id);
+      const status = await isInWishlist(productId);
       setInWishlist(status);
     } catch (error) {
       console.error("Error checking wishlist status:", error);

@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -16,9 +16,48 @@ const Index = () => {
   const [productWishlistStatus, setProductWishlistStatus] = useState<{[key: number]: boolean}>({});
   const { toast } = useToast();
   const { user } = useAuth();
+  
+  // Refs for parallax effect
+  const heroRef = useRef<HTMLDivElement>(null);
+  const productsRef = useRef<HTMLDivElement>(null);
+  const reviewsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetchFeaturedProducts();
+    
+    // Parallax scroll effect
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      
+      // Parallax for hero section
+      if (heroRef.current) {
+        heroRef.current.style.backgroundPositionY = `${scrollPosition * 0.5}px`;
+      }
+      
+      // Fade in effects for other sections
+      if (productsRef.current) {
+        const productsSectionTop = productsRef.current.offsetTop;
+        const productsSectionHeight = productsRef.current.offsetHeight;
+        if (scrollPosition > productsSectionTop - window.innerHeight / 1.5) {
+          productsRef.current.style.opacity = "1";
+          productsRef.current.style.transform = "translateY(0)";
+        }
+      }
+      
+      if (reviewsRef.current) {
+        const reviewsSectionTop = reviewsRef.current.offsetTop;
+        if (scrollPosition > reviewsSectionTop - window.innerHeight / 1.3) {
+          reviewsRef.current.style.opacity = "1";
+          reviewsRef.current.style.transform = "translateY(0)";
+        }
+      }
+    };
+    
+    window.addEventListener("scroll", handleScroll);
+    
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   useEffect(() => {
@@ -108,22 +147,27 @@ const Index = () => {
 
   return (
     <div>
-      {/* Hero Section with Full-screen Background */}
-      <section className="relative h-screen flex items-center">
-        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://img.freepik.com/free-photo/top-view-glazed-doughnuts-with-assortment-candy-marshmallow_23-2148423364.jpg?semt=ais_hybrid')" }} />
+      {/* Hero Section with Parallax Effect */}
+      <section 
+        ref={heroRef}
+        className="relative h-screen flex items-center bg-fixed bg-cover bg-center transition-all duration-300"
+        style={{ 
+          backgroundImage: "url('https://img.freepik.com/free-photo/top-view-glazed-doughnuts-with-assortment-candy-marshmallow_23-2148423364.jpg?semt=ais_hybrid')"
+        }}
+      >
         <div className="absolute inset-0 bg-black/60" />
         <div className="container mx-auto px-4 z-10 text-center text-white">
-          <h1 className="text-4xl md:text-6xl font-playfair font-bold mb-4">
+          <h1 className="text-4xl md:text-6xl font-playfair font-bold mb-4 animate-fade-in">
             Welcome to SweetTreats Haven
           </h1>
-          <h2 className="text-2xl md:text-4xl font-playfair font-medium mb-6">
+          <h2 className="text-2xl md:text-4xl font-playfair font-medium mb-6 animate-fade-in" style={{ animationDelay: "0.2s" }}>
             Discover Premium Sweets & Treats
           </h2>
-          <p className="text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
+          <p className="text-xl max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-in" style={{ animationDelay: "0.4s" }}>
             Indulge in our signature collection of handcrafted sweets and delicacies,
             perfect for every occasion or a sweet little treat for yourself.
           </p>
-          <div className="flex justify-center gap-4">
+          <div className="flex justify-center gap-4 animate-fade-in" style={{ animationDelay: "0.6s" }}>
             <Button size="lg" asChild>
               <Link to="/products">Shop Now</Link>
             </Button>
@@ -131,8 +175,11 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Featured Products Section */}
-      <section className="py-16 bg-gray-50">
+      {/* Featured Products Section with Scroll Animation */}
+      <section 
+        ref={productsRef}
+        className="py-16 bg-gray-50 opacity-0 transform translate-y-10 transition-all duration-700"
+      >
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-playfair font-bold text-center mb-12">Featured Products</h2>
 
@@ -161,13 +208,20 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Customer Reviews Section (Replacing Shop by Category) */}
-      <section className="py-16">
+      {/* Customer Reviews Section with Scroll Animation */}
+      <section 
+        ref={reviewsRef}
+        className="py-16 opacity-0 transform translate-y-10 transition-all duration-700"
+      >
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-playfair font-bold text-center mb-12">What Our Customers Say</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {reviews.map((review, index) => (
-              <div key={index} className="bg-white p-6 rounded-lg shadow-sm">
+              <div 
+                key={index} 
+                className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
                 <div className="flex items-center mb-4">
                   {[...Array(5)].map((_, i) => (
                     <StarIcon 
