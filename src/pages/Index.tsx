@@ -254,7 +254,7 @@ const reviews = [
     comment: "I ordered the gift box for my mother's birthday. The packaging was beautiful and the sweets were delicious. Will order again."
   },
   {
-    name: "Priya Sharma",
+    name: "Mohit Sharma",
     rating: 5,
     comment: "The handcrafted chocolates are truly exceptional. You can taste the quality and care put into making them. Highly recommend!"
   },
@@ -265,7 +265,7 @@ const reviews = [
   },
   {
     "name": "Bhaskar Kataria",
-    "rating": 4.5,
+    "rating": 4,
     "comment": "The packaging and flavors were fantastic. Just a little improvement needed in delivery speed."
   },
   {
@@ -274,8 +274,8 @@ const reviews = [
     "comment": "Loved the rich taste and variety of chocolates. A perfect gift option for any occasion!"
   },
   {
-    "name": "Angel Priya",
-    "rating": 4.5,
+    "name": "Kartikeya Kishtwal",
+    "rating": 4,
     "comment": "The chocolates were delicious, but I wish there were more sugar-free options. Otherwise, amazing quality!"
   }
 ];
