@@ -28,10 +28,10 @@ export function useCategories() {
       const subcategoriesMap: {[key: string]: string[]} = {};
       
       // Create simulated subcategories for each category
-      subcategoriesMap["Chocolates"] = ["Dark Chocolate", "Milk Chocolate", "White Chocolate", "Truffle Chocolate"];
-      subcategoriesMap["Candies"] = ["Hard Candy", "Gummy Candy", "Cotton Candy", "Lollipops"];
+      subcategoriesMap["Chocolate"] = ["Dark Chocolate", "Milk Chocolate", "White Chocolate", "Truffle Chocolate"];
+      subcategoriesMap["Candy"] = ["Hard Candy", "Gummy Candy", "Cotton Candy", "Lollipops"];
       subcategoriesMap["Gift Box"] = ["Assorted Box", "Holiday Special", "Premium Box", "Custom Box"];
-      subcategoriesMap["Truffles"] = ["Chocolate Truffle", "Cocoa Dusted", "Fruit Filled", "Liqueur Truffle"];
+      subcategoriesMap["Truffle"] = ["Chocolate Truffle", "Cocoa Dusted", "Fruit Filled", "Liqueur Truffle"];
       
       setSubcategories(subcategoriesMap);
     } catch (error) {
