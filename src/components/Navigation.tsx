@@ -64,14 +64,6 @@ export function Navigation() {
     }
   };
 
-  // Calculate grid columns based on category count
-  const getGridColumns = () => {
-    const count = categories.length;
-    if (count <= 4) return "grid-cols-1";
-    if (count <= 8) return "grid-cols-2";
-    return "grid-cols-3";
-  };
-
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -99,8 +91,8 @@ export function Navigation() {
                 <NavigationMenuItem>
                   <NavigationMenuTrigger>Products</NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <ul className={`grid w-[400px] gap-2 p-4 md:w-[500px] ${getGridColumns()} lg:w-[600px]`}>
-                      <li className="col-span-full">
+                    <ul className="grid w-[400px] gap-2 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                      <li className="col-span-2">
                         <NavigationMenuLink asChild>
                           <Link
                             to="/products"
@@ -198,7 +190,7 @@ export function Navigation() {
                     Products <ChevronDown className="ml-2 h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-full max-h-80 overflow-y-auto">
+                <DropdownMenuContent className="w-full">
                   <DropdownMenuItem>
                     <Link to="/products" className="w-full" onClick={toggleMenu}>
                       All Products

@@ -12,6 +12,7 @@ import { Product } from "@/types/product";
 import { useToast } from "@/hooks/use-toast";
 
 const Products = () => {
+  const [selectedSubcategories, setSelectedSubcategories] = useState<string[]>([]);
   const [productWishlistStatus, setProductWishlistStatus] = useState<{[key: number]: boolean}>({});
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [searchParams, setSearchParams] = useSearchParams();
@@ -37,7 +38,7 @@ const Products = () => {
     minPrice,
     maxPrice,
     deliveryTime,
-    []  // Empty array since we removed subcategories filter
+    selectedSubcategories
   );
 
   // Initialize category selection from URL
@@ -46,6 +47,15 @@ const Products = () => {
       setSelectedCategory(categoryFilter);
     }
   }, [categoryFilter]);
+
+  // Initialize selected subcategories from URL if present
+  useEffect(() => {
+    if (subcategoryFilter) {
+      setSelectedSubcategories([subcategoryFilter]);
+    } else {
+      setSelectedSubcategories([]);
+    }
+  }, [subcategoryFilter]);
 
   // Fetch products when filters change
   useEffect(() => {
@@ -58,6 +68,16 @@ const Products = () => {
       checkWishlistStatus();
     }
   }, [products, user]);
+
+  const handleSubcategoryChange = (subcategory: string) => {
+    setSelectedSubcategories(prev => {
+      if (prev.includes(subcategory)) {
+        return prev.filter(sc => sc !== subcategory);
+      } else {
+        return [...prev, subcategory];
+      }
+    });
+  };
 
   const checkWishlistStatus = async () => {
     if (!user || products.length === 0) return;
@@ -117,6 +137,7 @@ const Products = () => {
 
   const handleCategorySelect = (category: string) => {
     setSelectedCategory(category === "all" ? "" : category);
+    setSelectedSubcategories([]);
     
     // Update URL to reflect category change
     const newParams = new URLSearchParams(searchParams);
@@ -162,9 +183,12 @@ const Products = () => {
         <div className="md:col-span-1">
           <ProductFilters 
             categories={[]}  // Remove categories from filters since we have them in the top buttons
+            subcategories={selectedCategory ? (subcategories[selectedCategory] || []) : []}
+            selectedSubcategories={selectedSubcategories}
             minPrice={minPrice}
             maxPrice={maxPrice}
             deliveryTime={deliveryTime}
+            onSubcategoryChange={handleSubcategoryChange}
             onApplyFilters={fetchProducts}
           />
         </div>

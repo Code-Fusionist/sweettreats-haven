@@ -9,5 +9,4 @@ export type Product = {
   subcategory: string;
   rating: number;
   reviews_count: number;
-  delivery_time?: string;
 };
