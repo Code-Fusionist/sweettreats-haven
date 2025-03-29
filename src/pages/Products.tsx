@@ -12,7 +12,6 @@ import { Product } from "@/types/product";
 import { useToast } from "@/hooks/use-toast";
 
 const Products = () => {
-  const [selectedSubcategories, setSelectedSubcategories] = useState<string[]>([]);
   const [productWishlistStatus, setProductWishlistStatus] = useState<{[key: number]: boolean}>({});
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [searchParams, setSearchParams] = useSearchParams();
@@ -22,23 +21,20 @@ const Products = () => {
   // Get filter parameters from URL
   const searchTerm = searchParams.get("search") || "";
   const categoryFilter = searchParams.get("category") || "";
-  const subcategoryFilter = searchParams.get("subcategory") || "";
   const sortBy = searchParams.get("sort") || "";
   const minPrice = Number(searchParams.get("minPrice") || 0);
   const maxPrice = Number(searchParams.get("maxPrice") || 5000);
   const deliveryTime = searchParams.get("delivery") || "";
 
   // Custom hooks for fetching data
-  const { categories, subcategories } = useCategories();
+  const { categories } = useCategories();
   const { products, isLoading, fetchProducts } = useProducts(
     searchTerm,
     selectedCategory || categoryFilter,
-    subcategoryFilter,
     sortBy,
     minPrice,
     maxPrice,
-    deliveryTime,
-    selectedSubcategories
+    deliveryTime
   );
 
   // Initialize category selection from URL
@@ -47,15 +43,6 @@ const Products = () => {
       setSelectedCategory(categoryFilter);
     }
   }, [categoryFilter]);
-
-  // Initialize selected subcategories from URL if present
-  useEffect(() => {
-    if (subcategoryFilter) {
-      setSelectedSubcategories([subcategoryFilter]);
-    } else {
-      setSelectedSubcategories([]);
-    }
-  }, [subcategoryFilter]);
 
   // Fetch products when filters change
   useEffect(() => {
@@ -68,16 +55,6 @@ const Products = () => {
       checkWishlistStatus();
     }
   }, [products, user]);
-
-  const handleSubcategoryChange = (subcategory: string) => {
-    setSelectedSubcategories(prev => {
-      if (prev.includes(subcategory)) {
-        return prev.filter(sc => sc !== subcategory);
-      } else {
-        return [...prev, subcategory];
-      }
-    });
-  };
 
   const checkWishlistStatus = async () => {
     if (!user || products.length === 0) return;
@@ -137,7 +114,6 @@ const Products = () => {
 
   const handleCategorySelect = (category: string) => {
     setSelectedCategory(category === "all" ? "" : category);
-    setSelectedSubcategories([]);
     
     // Update URL to reflect category change
     const newParams = new URLSearchParams(searchParams);
@@ -146,7 +122,6 @@ const Products = () => {
     } else {
       newParams.set("category", category);
     }
-    newParams.delete("subcategory");
     setSearchParams(newParams);
   };
 
@@ -182,13 +157,9 @@ const Products = () => {
         {/* Sidebar Filters */}
         <div className="md:col-span-1">
           <ProductFilters 
-            categories={[]}  // Remove categories from filters since we have them in the top buttons
-            subcategories={selectedCategory ? (subcategories[selectedCategory] || []) : []}
-            selectedSubcategories={selectedSubcategories}
             minPrice={minPrice}
             maxPrice={maxPrice}
             deliveryTime={deliveryTime}
-            onSubcategoryChange={handleSubcategoryChange}
             onApplyFilters={fetchProducts}
           />
         </div>

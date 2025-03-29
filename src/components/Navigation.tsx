@@ -91,7 +91,7 @@ export function Navigation() {
                 <NavigationMenuItem>
                   <NavigationMenuTrigger>Products</NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <ul className="grid w-[400px] gap-2 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                    <ul className="grid w-[400px] gap-2 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] max-h-[400px] overflow-y-auto">
                       <li className="col-span-2">
                         <NavigationMenuLink asChild>
                           <Link
@@ -190,7 +190,7 @@ export function Navigation() {
                     Products <ChevronDown className="ml-2 h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-full">
+                <DropdownMenuContent className="w-full max-h-[300px] overflow-y-auto">
                   <DropdownMenuItem>
                     <Link to="/products" className="w-full" onClick={toggleMenu}>
                       All Products
