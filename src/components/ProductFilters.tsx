@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import { Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import { Slider } from "@/components/ui/slider";
 import { useSearchParams } from "react-router-dom";
@@ -14,24 +13,16 @@ import {
 } from "@/components/ui/accordion";
 
 type ProductFiltersProps = {
-  categories: string[];
-  subcategories: {[key: string]: string[]};
-  selectedSubcategories: string[];
   minPrice: number;
   maxPrice: number;
   deliveryTime: string;
-  onSubcategoryChange: (subcategory: string) => void;
   onApplyFilters: () => void;
 };
 
 export function ProductFilters({
-  categories,
-  subcategories,
-  selectedSubcategories,
   minPrice,
   maxPrice,
   deliveryTime,
-  onSubcategoryChange,
   onApplyFilters,
 }: ProductFiltersProps) {
   const [priceRange, setPriceRange] = useState<number[]>([minPrice || 0, maxPrice || 5000]);
@@ -78,35 +69,7 @@ export function ProductFilters({
     <div className="sticky top-24 bg-white p-4 rounded-lg border shadow-md">
       <h2 className="text-lg font-semibold mb-4">Filters</h2>
       
-      <Accordion type="multiple" className="w-full" defaultValue={["subcategories", "price", "delivery"]}>
-        <AccordionItem value="subcategories">
-          <AccordionTrigger>Subcategories</AccordionTrigger>
-          <AccordionContent>
-            <div className="space-y-2">
-              {Object.entries(subcategories).map(([category, categorySubcategories]) => (
-                <div key={category} className="space-y-1">
-                  <p className="font-medium text-sm">{category}</p>
-                  {categorySubcategories.map((subcategory) => (
-                    <div key={subcategory} className="flex items-center space-x-2 ml-2">
-                      <Checkbox 
-                        id={`subcategory-${subcategory}`} 
-                        checked={selectedSubcategories.includes(subcategory)}
-                        onCheckedChange={() => onSubcategoryChange(subcategory)}
-                      />
-                      <label 
-                        htmlFor={`subcategory-${subcategory}`}
-                        className="text-sm cursor-pointer"
-                      >
-                        {subcategory}
-                      </label>
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-        
+      <Accordion type="multiple" className="w-full" defaultValue={["price", "delivery"]}>
         <AccordionItem value="price">
           <AccordionTrigger>Price Range</AccordionTrigger>
           <AccordionContent>
