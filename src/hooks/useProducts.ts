@@ -7,7 +7,6 @@ import { Product } from "@/types/product";
 export function useProducts(
   searchTerm: string,
   categoryFilter: string,
-  subcategoryFilter: string,
   sortBy: string,
   minPrice: number,
   maxPrice: number,
@@ -80,7 +79,6 @@ export function useProducts(
       // Transform the data to ensure all fields have values
       const processedData = (data || []).map(item => ({
         ...item,
-        subcategory: item.subcategory || '', // Add subcategory field if it doesn't exist
         rating: item.rating || 0,
         reviews_count: item.reviews_count || 0,
         delivery_time: item.delivery_time || '3-5-days'
@@ -102,7 +100,7 @@ export function useProducts(
 
   useEffect(() => {
     fetchProducts();
-  }, [searchTerm, categoryFilter, subcategoryFilter, sortBy, minPrice, maxPrice, deliveryTime]);
+  }, [searchTerm, categoryFilter, sortBy, minPrice, maxPrice, deliveryTime]);
 
   return { products, isLoading, fetchProducts };
 }

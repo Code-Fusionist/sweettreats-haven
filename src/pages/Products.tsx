@@ -21,18 +21,16 @@ const Products = () => {
   // Get filter parameters from URL
   const searchTerm = searchParams.get("search") || "";
   const categoryFilter = searchParams.get("category") || "";
-  const subcategoryFilter = searchParams.get("subcategory") || "";
   const sortBy = searchParams.get("sort") || "";
   const minPrice = Number(searchParams.get("minPrice") || 0);
   const maxPrice = Number(searchParams.get("maxPrice") || 5000);
   const deliveryTime = searchParams.get("delivery") || "";
 
   // Custom hooks for fetching data
-  const { categories, subcategories } = useCategories();
+  const { categories } = useCategories();
   const { products, isLoading, fetchProducts } = useProducts(
     searchTerm,
     selectedCategory || categoryFilter,
-    subcategoryFilter,
     sortBy,
     minPrice,
     maxPrice,
@@ -124,7 +122,6 @@ const Products = () => {
     } else {
       newParams.set("category", category);
     }
-    newParams.delete("subcategory");
     setSearchParams(newParams);
   };
 
