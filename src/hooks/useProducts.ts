@@ -42,6 +42,11 @@ export function useProducts(
         query = query.lte("price", maxPrice);
       }
       
+      // Apply delivery time filter if present
+      if (deliveryTime) {
+        query = query.eq("delivery_time", deliveryTime);
+      }
+      
       // Apply sorting
       if (sortBy) {
         switch (sortBy) {
@@ -56,6 +61,9 @@ export function useProducts(
             break;
           case "name-desc":
             query = query.order("name", { ascending: false });
+            break;
+          case "rating-desc":
+            query = query.order("rating", { ascending: false });
             break;
           default:
             // Default sorting
@@ -72,42 +80,13 @@ export function useProducts(
       
       let filteredData = data || [];
       
-      // Apply subcategory filter in JavaScript
-      // This is a simulation since our database doesn't have subcategories column yet
-      if (selectedSubcategories.length > 0) {
-        console.log("Filtering by subcategories:", selectedSubcategories);
-        // In a real app, you would filter by subcategory in the database query
-        // For this demo, we'll just log the filter without actually filtering
-      } else if (subcategoryFilter) {
-        console.log("Filtering by subcategory:", subcategoryFilter);
-        // Same as above, just logging for the demo
-      }
-      
-      // For delivery time filter - simulate with product IDs
-      if (deliveryTime) {
-        console.log("Filtering by delivery time:", deliveryTime);
-        switch(deliveryTime) {
-          case "under-24h":
-            // Simulate delivery time filter - products with IDs divisible by 2 are "fast delivery"
-            filteredData = filteredData.filter(product => product.id % 2 === 0);
-            break;
-          case "1-2-days":
-            // Simulate 1-2 days delivery for products with IDs divisible by 3
-            filteredData = filteredData.filter(product => product.id % 3 === 0);
-            break;
-          case "3-5-days":
-            // Simulate 3-5 days delivery for other products
-            filteredData = filteredData.filter(product => product.id % 3 !== 0 && product.id % 2 !== 0);
-            break;
-        }
-      }
-      
       // Transform the data to ensure all fields have values
       const processedData = filteredData.map(item => ({
         ...item,
         subcategory: item.subcategory || '',
         rating: item.rating || 0,
-        reviews_count: item.reviews_count || 0
+        reviews_count: item.reviews_count || 0,
+        delivery_time: item.delivery_time || '3-5-days'
       }));
       
       setProducts(processedData as Product[]);
@@ -126,7 +105,7 @@ export function useProducts(
 
   useEffect(() => {
     fetchProducts();
-  }, [searchTerm, categoryFilter, sortBy, minPrice, maxPrice, deliveryTime, selectedSubcategories.join(',')]);
+  }, [searchTerm, categoryFilter, sortBy, minPrice, maxPrice, deliveryTime]);
 
   return { products, isLoading, fetchProducts };
 }

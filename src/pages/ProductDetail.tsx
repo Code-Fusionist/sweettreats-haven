@@ -31,10 +31,11 @@ const ProductDetail = () => {
   const fetchProduct = async () => {
     setLoading(true);
     try {
+      const productId = parseInt(id || "0");
       const { data, error } = await supabase
         .from("products")
         .select("*")
-        .eq("id", id)
+        .eq("id", productId)
         .single();
       
       if (error) throw error;
@@ -55,7 +56,8 @@ const ProductDetail = () => {
     if (!user || !id) return;
     try {
       // Convert string id to number for wishlist check
-      const status = await isInWishlist(parseInt(id));
+      const productId = parseInt(id);
+      const status = await isInWishlist(productId);
       setInWishlist(status);
     } catch (error) {
       console.error("Error checking wishlist status:", error);
@@ -229,6 +231,19 @@ const ProductDetail = () => {
                   {product.subcategory}
                 </span>
               )}
+            </div>
+          </div>
+          
+          <div className="mb-6">
+            <h2 className="text-lg font-semibold mb-2">Delivery</h2>
+            <div className="flex gap-2">
+              <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
+                {product.delivery_time === "under-24h" 
+                  ? "Express Delivery (24h)" 
+                  : product.delivery_time === "1-2-days" 
+                    ? "Fast Delivery (1-2 days)" 
+                    : "Standard Delivery (3-5 days)"}
+              </span>
             </div>
           </div>
           

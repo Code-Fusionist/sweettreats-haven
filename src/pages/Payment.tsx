@@ -3,6 +3,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import {
   Card,
   CardContent,
@@ -18,33 +20,93 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 const Payment = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("card");
+  const [address, setAddress] = useState("");
+  const [phone, setPhone] = useState("");
 
-  const generateOrderId = () => {
-    return 'ORD' + Date.now().toString().slice(-8) + Math.random().toString(36).slice(-4).toUpperCase();
+  const generateTrackingNumber = () => {
+    return 'TRK' + Date.now().toString().slice(-6) + Math.random().toString(36).slice(-4).toUpperCase();
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-
-    // Simulate order processing
-    await new Promise(resolve => setTimeout(resolve, 2000));
-
-    const orderId = generateOrderId();
     
-    // Clear cart after successful order
-    localStorage.setItem('cart', '[]');
-    window.dispatchEvent(new Event('cartUpdated'));
+    if (!user) {
+      toast({
+        title: "Please login",
+        description: "You need to be logged in to place an order",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    setLoading(true);
+    
+    try {
+      // Get cart items from localStorage
+      const cartItems = JSON.parse(localStorage.getItem('cart') || '[]');
+      
+      if (cartItems.length === 0) {
+        throw new Error("Your cart is empty");
+      }
+      
+      // Calculate total price
+      const totalPrice = cartItems.reduce((sum: number, item: any) => sum + (item.price * item.quantity), 0);
+      
+      // Generate tracking number
+      const trackingNumber = generateTrackingNumber();
+      
+      // Create order in the database
+      const { data: order, error: orderError } = await supabase
+        .from('orders')
+        .insert({
+          user_id: user.id,
+          tracking_number: trackingNumber,
+          total: totalPrice,
+          status: 'pending',
+          shipping_address: paymentMethod === 'cod' ? address : 'Not provided', 
+        })
+        .select()
+        .single();
+      
+      if (orderError) throw orderError;
+      
+      // Add order items to the database
+      const orderItems = cartItems.map((item: any) => ({
+        order_id: order.id,
+        product_id: item.id,
+        quantity: item.quantity,
+        price: item.price
+      }));
+      
+      const { error: itemsError } = await supabase
+        .from('order_items')
+        .insert(orderItems);
+      
+      if (itemsError) throw itemsError;
+      
+      // Clear cart after successful order
+      localStorage.setItem('cart', '[]');
+      window.dispatchEvent(new Event('cartUpdated'));
 
-    toast({
-      title: "Order Placed Successfully!",
-      description: `Your order ID is: ${orderId}`,
-    });
+      toast({
+        title: "Order Placed Successfully!",
+        description: `Your tracking number is: ${trackingNumber}`,
+      });
 
-    setLoading(false);
-    navigate('/tracking', { state: { orderId } });
+      setLoading(false);
+      navigate('/tracking', { state: { orderId: order.id, trackingNumber } });
+    } catch (error: any) {
+      console.error("Error creating order:", error);
+      toast({
+        title: "Error",
+        description: error.message || "Failed to place your order",
+        variant: "destructive",
+      });
+      setLoading(false);
+    }
   };
 
   return (
@@ -114,11 +176,24 @@ const Payment = () => {
                 <div className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="address">Delivery Address</Label>
-                    <Input id="address" placeholder="Enter your full address" required />
+                    <Input 
+                      id="address" 
+                      placeholder="Enter your full address" 
+                      required
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                    />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="phone">Phone Number</Label>
-                    <Input id="phone" type="tel" placeholder="Enter your phone number" required />
+                    <Input 
+                      id="phone" 
+                      type="tel" 
+                      placeholder="Enter your phone number" 
+                      required
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                    />
                   </div>
                 </div>
               )}
