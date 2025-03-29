@@ -110,7 +110,7 @@ const Index = () => {
     <div>
       {/* Hero Section with Full-screen Background */}
       <section className="relative h-screen flex items-center">
-        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://img.freepik.com/free-photo/3d-cartoon-background-children_23-2150150788.jpg?semt=ais_hybrid')" }} />
+        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://img.freepik.com/free-photo/top-view-glazed-doughnuts-with-assortment-candy-marshmallow_23-2148423364.jpg?semt=ais_hybrid')" }} />
         <div className="absolute inset-0 bg-black/60" />
         <div className="container mx-auto px-4 z-10 text-center text-white">
           <h1 className="text-4xl md:text-6xl font-playfair font-bold mb-4">
