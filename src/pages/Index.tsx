@@ -190,19 +190,39 @@ const Index = () => {
 // Sample reviews data (in a real app, this would come from the database)
 const reviews = [
   {
-    name: "Sarah Johnson",
+    name: "Bhavya Munjal",
     rating: 5,
-    comment: "The assorted chocolate box was perfect for my anniversary celebration. Everyone loved the variety and quality of flavors!"
+    comment: "The assorted chocolate box was perfect for my anniversary celebration. Everyone loved the variety and quality of flavors! I love chocolate and as a chocolate lover I recommend this website they serve premium varietys."
   },
   {
-    name: "Michael Chen",
-    rating: 4,
+    name: "Keshav Aggarwal",
+    rating: 4.5,
     comment: "I ordered the gift box for my mother's birthday. The packaging was beautiful and the sweets were delicious. Will order again."
   },
   {
     name: "Priya Sharma",
     rating: 5,
     comment: "The handcrafted chocolates are truly exceptional. You can taste the quality and care put into making them. Highly recommend!"
+  }
+  {
+    "name": "Hardik Solanki",
+    "rating": 5,
+    "comment": "Amazing chocolates! The taste and texture are just perfect. Will definitely order again!"
+  },
+  {
+    "name": "Bhaskar Kataria",
+    "rating": 4.5,
+    "comment": "The packaging and flavors were fantastic. Just a little improvement needed in delivery speed."
+  },
+  {
+    "name": "Pranav Kumar",
+    "rating": 5,
+    "comment": "Loved the rich taste and variety of chocolates. A perfect gift option for any occasion!"
+  },
+  {
+    "name": "Angel Priya",
+    "rating": 4.5,
+    "comment": "The chocolates were delicious, but I wish there were more sugar-free options. Otherwise, amazing quality!"
   }
 ];
 
