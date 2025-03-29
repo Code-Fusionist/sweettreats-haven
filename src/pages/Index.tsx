@@ -203,7 +203,7 @@ const reviews = [
     name: "Priya Sharma",
     rating: 5,
     comment: "The handcrafted chocolates are truly exceptional. You can taste the quality and care put into making them. Highly recommend!"
-  }
+  },
   {
     "name": "Hardik Solanki",
     "rating": 5,
