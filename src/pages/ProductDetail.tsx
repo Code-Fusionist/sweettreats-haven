@@ -38,16 +38,7 @@ const ProductDetail = () => {
         .single();
       
       if (error) throw error;
-      
-      // Process the product to ensure all required fields are present
-      const processedProduct: Product = {
-        ...data,
-        rating: data.rating || 0,
-        reviews_count: data.reviews_count || 0,
-        delivery_time: data.delivery_time || '3-5-days'
-      };
-      
-      setProduct(processedProduct);
+      setProduct(data);
     } catch (error) {
       console.error("Error fetching product:", error);
       toast({
@@ -64,8 +55,7 @@ const ProductDetail = () => {
     if (!user || !id) return;
     try {
       // Convert string id to number for wishlist check
-      const productId = parseInt(id);
-      const status = await isInWishlist(productId);
+      const status = await isInWishlist(parseInt(id));
       setInWishlist(status);
     } catch (error) {
       console.error("Error checking wishlist status:", error);
@@ -234,19 +224,13 @@ const ProductDetail = () => {
               <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm">
                 {product.category}
               </span>
+              {product.subcategory && (
+                <span className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm">
+                  {product.subcategory}
+                </span>
+              )}
             </div>
           </div>
-          
-          {product.delivery_time && (
-            <div className="mb-6">
-              <h2 className="text-lg font-semibold mb-2">Delivery Time</h2>
-              <span className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm">
-                {product.delivery_time === 'under-24h' ? 'Under 24 hours' : 
-                 product.delivery_time === '1-2-days' ? '1-2 days' : 
-                 '3-5 days'}
-              </span>
-            </div>
-          )}
           
           <div className="mb-6">
             <h2 className="text-lg font-semibold mb-2">Quantity</h2>

@@ -6,12 +6,19 @@ import { Heart } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { addToWishlist, removeFromWishlist } from "@/services/wishlist";
-import { Product } from "@/types/product";
 
 type ProductCardProps = {
-  product: Product;
-  onAddToCart: (product: Product) => void;
-  onProductSelect: (product: Product) => void;
+  product: {
+    id: number;
+    name: string;
+    description: string;
+    price: number;
+    image: string;
+    category: string;
+    subcategory?: string;
+  };
+  onAddToCart: (product: any) => void;
+  onProductSelect: (product: any) => void;
   isInWishlist?: boolean;
   onWishlistChange?: () => void;
 };
@@ -103,9 +110,9 @@ export function ProductCard({
           <Heart className={inWishlist ? "fill-current" : ""} />
         </Button>
         
-        {product.category && (
+        {product.subcategory && (
           <div className="absolute top-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
-            {product.category}
+            {product.subcategory}
           </div>
         )}
       </div>

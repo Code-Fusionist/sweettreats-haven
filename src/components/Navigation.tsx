@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ShoppingCart, Menu, X, ChevronDown } from "lucide-react";
@@ -63,17 +64,6 @@ export function Navigation() {
     }
   };
 
-  // Split categories into columns for better display
-  const splitCategories = () => {
-    const midpoint = Math.ceil(categories.length / 2);
-    return {
-      left: categories.slice(0, midpoint),
-      right: categories.slice(midpoint)
-    };
-  };
-
-  const { left, right } = splitCategories();
-
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -91,7 +81,7 @@ export function Navigation() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-4 flex-1 justify-end">
+          <div className="hidden md:flex items-center justify-end space-x-6 flex-1">
             <div className="flex-grow max-w-md">
               <SearchBar />
             </div>
@@ -101,32 +91,33 @@ export function Navigation() {
                 <NavigationMenuItem>
                   <NavigationMenuTrigger>Products</NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="grid w-[500px] gap-3 p-4 md:w-[600px] md:grid-cols-1 lg:w-[700px]">
-                      <NavigationMenuLink asChild>
-                        <Link
-                          to="/products"
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                        >
-                          <div className="text-sm font-medium leading-none">All Products</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            Browse our full collection of premium sweets and treats
-                          </p>
-                        </Link>
-                      </NavigationMenuLink>
-                      
-                      <div className="grid grid-cols-3 gap-2">
-                        {categories.map((category) => (
-                          <NavigationMenuLink key={category} asChild>
+                    <ul className="grid w-[400px] gap-2 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                      <li className="col-span-2">
+                        <NavigationMenuLink asChild>
+                          <Link
+                            to="/products"
+                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                          >
+                            <div className="text-sm font-medium leading-none">All Products</div>
+                            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                              Browse our full collection of premium sweets and treats
+                            </p>
+                          </Link>
+                        </NavigationMenuLink>
+                      </li>
+                      {categories.map((category) => (
+                        <li key={category}>
+                          <NavigationMenuLink asChild>
                             <Link
                               to={`/products?category=${encodeURIComponent(category)}`}
-                              className="block select-none rounded-md p-2 text-sm leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                              className="block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                             >
-                              {category}
+                              <div className="text-sm font-medium leading-none">{category}</div>
                             </Link>
                           </NavigationMenuLink>
-                        ))}
-                      </div>
-                    </div>
+                        </li>
+                      ))}
+                    </ul>
                   </NavigationMenuContent>
                 </NavigationMenuItem>
               </NavigationMenuList>
@@ -199,7 +190,7 @@ export function Navigation() {
                     Products <ChevronDown className="ml-2 h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-full max-h-[60vh] overflow-auto">
+                <DropdownMenuContent className="w-full">
                   <DropdownMenuItem>
                     <Link to="/products" className="w-full" onClick={toggleMenu}>
                       All Products
@@ -240,15 +231,10 @@ export function Navigation() {
               
               <Link
                 to="/cart"
-                className="flex items-center text-primary hover:text-accent transition-colors py-2"
+                className="block text-primary hover:text-accent transition-colors py-2"
                 onClick={toggleMenu}
               >
-                <span className="mr-2">Cart</span>
-                {cartCount > 0 && (
-                  <span className="bg-accent text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                    {cartCount}
-                  </span>
-                )}
+                Cart ({cartCount})
               </Link>
               
               <Link
