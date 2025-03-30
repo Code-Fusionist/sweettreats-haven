@@ -73,7 +73,7 @@ const Index = () => {
         .from("products")
         .select("*")
         .eq("is_featured", true)
-        .limit(4);
+        .limit(8);
       
       if (error) throw error;
       
