@@ -77,7 +77,7 @@ export function Navigation() {
             to="/"
             className="text-2xl font-playfair font-semibold text-primary"
           >
-            SweetCart
+            SweetTreats
           </Link>
 
           {/* Desktop Navigation */}
