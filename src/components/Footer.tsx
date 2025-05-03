@@ -38,7 +38,8 @@ export function Footer() {
               <li>Email: info@SweetTreats.com</li>
               <li>Phone: +1 (555) 123-4567</li>
               <li>Address: 123 Sweet Street,</li>
-              <li>Chocolate City, CC 12345</li>
+              <li>Hershey, PA 17033</li>
+              <li>United States</li>
             </ul>
           </div>
           
