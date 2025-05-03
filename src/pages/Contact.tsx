@@ -103,8 +103,8 @@ const Contact = () => {
               <div>
                 <h3 className="font-semibold mb-2">Address</h3>
                 <p className="text-gray-600">
-                  123 Sweet Street<br />
-                  Chocolate City, CC 12345<br />
+                  123 Sweet Street,<br />
+                  Hershey, PA 17033<br />
                   United States
                 </p>
               </div>
